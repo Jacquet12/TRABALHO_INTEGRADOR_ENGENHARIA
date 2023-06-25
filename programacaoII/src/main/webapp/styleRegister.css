@@ -1,0 +1,81 @@
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #2f2f32;
+    margin: 0;
+    padding: 20px;
+  }
+  
+  .Cadastrar {
+    align-items: center;
+    justify-content: center;
+    justify-content: center;
+    max-width: 400px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+  }
+  
+  #title {
+    text-align: center;
+    color: #333333;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333333;
+  }
+  
+  input[type="email"],
+  input[type="text"],
+  input[type="tel"],
+  input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #dddddd;
+    border-radius: 3px;
+  }
+  
+  .cpf-input {
+    position: relative;
+  }
+  
+  .cpf-input input[type="text"] {
+    padding-right: 10px;
+  }
+  
+  
+  .confirm-password-input {
+    margin-top: 20px;
+  }
+  
+  .confirm-password-input label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333333;
+  }
+  
+  .confirm-password-input input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #dddddd;
+    border-radius: 3px;
+  }
+  
+  .favorite.styled {
+    background-color: #333333;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  .favorite.styled:hover {
+    background-color: #555555;
+  }
+  

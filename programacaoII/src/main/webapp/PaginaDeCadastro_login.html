@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WILOUMAGAZINE</title>
+    <link rel ="stylesheet" href="styleRegister.css">
+</head>
+<body>
+    <form class="Cadastrar">
+        <h2 id="title">Cadastrar</h2>
+        <div>
+         <label for="email">Enter your email:</label>
+            <input type="email" id="email"
+            pattern=".+@globex\.com" size="30" required>
+
+        </div>
+        <div>
+            <label for="name">your Name</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div>
+            <label for="phone">Enter your phone number:</label>
+            <input type="tel" id="phone" name="phone"
+            pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+            required>
+        </div>
+        <div class="cpf-input">
+            <label for="cpf">CPF:</label>
+            <input type="text" id="cpf" maxlength="14" placeholder="___.___.___-__">
+        </div>
+
+        <div class="confirm-password-input">
+            <label for="password">Password:</label>
+            <input type="password" id="password" placeholder="Enter your password">
+            <label for="confirm-password">Confirm Password:</label>
+            <input type="password" id="confirm-password" placeholder="Confirm your password">
+    </div>
+          
+    <div>
+    <input class="favorite styled"
+    type="button"
+    value="Confirm">
+    </div>
+    </form> 
+</body>
+</html>
