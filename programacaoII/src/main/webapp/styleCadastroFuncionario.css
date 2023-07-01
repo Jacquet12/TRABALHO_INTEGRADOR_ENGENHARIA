@@ -78,4 +78,17 @@ body {
   .favorite.styled:hover {
     background-color: #555555;
   }
+
+  .buton-geral div{
+    display: inline-flex;
+    margin-right: 50px;
+  }
+  .buton-cancel input{
+    background-color: red;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
   

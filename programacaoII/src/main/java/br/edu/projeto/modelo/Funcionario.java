@@ -1,20 +1,35 @@
 package br.edu.projeto.modelo;
 
 public class Funcionario {
-    private String nome_completo;
+    private String nome;
+    private String sobre_nome;
+    private String tipo_foncionario;
     private String cpf;
     private String email;
     private String senha;
     private String confirmacao_senha;
-    private String data_cadastro;
     private String administrador_cpf;
 
     
-    public String getNome_completo() {
-        return nome_completo;
+    public String getNome() {
+        return nome;
     }
-    public void setNome_completo(String nome_completo) {
-        this.nome_completo = nome_completo;
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+   
+    public String getSobre_nome() {
+        return sobre_nome;
+    }
+    public void setSobre_nome(String sobre_nome) {
+        this.sobre_nome = sobre_nome;
+    }
+
+    public String getTipo_foncionario() {
+        return tipo_foncionario;
+    }
+    public void setTipo_foncionario(String tipo_foncionario) {
+        this.tipo_foncionario = tipo_foncionario;
     }
     public String getCpf() {
         return cpf;
@@ -40,12 +55,7 @@ public class Funcionario {
     public void setConfirmacao_senha(String confirmacao_senha) {
         this.confirmacao_senha = confirmacao_senha;
     }
-    public String getData_cadastro() {
-        return data_cadastro;
-    }
-    public void setData_cadastro(String data_cadastro) {
-        this.data_cadastro = data_cadastro;
-    }
+    
     public String getAdministrador_cpf() {
         return administrador_cpf;
     }
