@@ -41,7 +41,7 @@ public class FuncionarioDAO implements Serializable{
 				f.setCpf(rs.getString("cpf"));
 				f.setNome(rs.getString("nome"));
                 f.setSobre_nome(rs.getString("sobre_nome"));
-                f.setTipo_foncionario(rs.getString("tipo_funcionario"));
+                f.setTipo_funcionario(rs.getString("tipo_funcionario"));
                 f.setEmail(rs.getString("email"));
                 f.setPhone_number(rs.getString("phone_number"));
                 f.setSenha(rs.getString("senha"));
@@ -70,7 +70,7 @@ public class FuncionarioDAO implements Serializable{
 				ps.setString(1, f.getCpf());
 				ps.setString(2, f.getNome());
                 ps.setString(3, f.getSobre_nome());
-                ps.setString(4, f.getTipo_foncionario());
+                ps.setString(4, f.getTipo_funcionario());
                 ps.setString(5, f.getEmail());
                 ps.setString(6, f.getPhone_number());
                 ps.setString(7, f.getSenha());

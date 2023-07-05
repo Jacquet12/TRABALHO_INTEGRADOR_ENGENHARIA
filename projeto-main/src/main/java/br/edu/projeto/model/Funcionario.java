@@ -3,7 +3,8 @@ package br.edu.projeto.model;
 public class Funcionario {
     private String nome;
     private String sobre_nome;
-    private String tipo_foncionario;
+    
+    private String tipo_funcionario;
     private String cpf;
     private String email;
     private String senha;
@@ -33,12 +34,6 @@ public class Funcionario {
         this.sobre_nome = sobre_nome;
     }
 
-      public String getTipo_foncionario() {
-        return tipo_foncionario;
-    }
-    public void setTipo_foncionario(String tipo_foncionario) {
-        this.tipo_foncionario = tipo_foncionario;
-    }
     public String getCpf() {
         return cpf;
     }
@@ -63,6 +58,11 @@ public class Funcionario {
     public void setConfirmacao_senha(String confirmacao_senha) {
         this.confirmacao_senha = confirmacao_senha;
     }
-    
+    public String getTipo_funcionario() {
+        return tipo_funcionario;
+    }
+    public void setTipo_funcionario(String tipo_funcionario) {
+        this.tipo_funcionario = tipo_funcionario;
+    }
 
 }

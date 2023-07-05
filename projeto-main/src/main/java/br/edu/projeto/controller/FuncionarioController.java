@@ -1,6 +1,5 @@
 package br.edu.projeto.controller;
 
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -36,11 +35,11 @@ public class FuncionarioController implements Serializable {
 	
 	@Inject
     private FuncionarioDAO funcionarioDAO;
-
-
-    private Funcionario funcionario;
 	
-	private List<Funcionario> listaFuncionarios;
+	
+    private Funcionario funcionario;
+    private List<Funcionario> listaFuncionarios;
+	
 	//Anotação que força execução do método após o construtor da classe ser executado
     @PostConstruct
     public void init() {
@@ -50,51 +49,62 @@ public class FuncionarioController implements Serializable {
 	
     //Chamado pelo botão novo
 	public void novoCadastro() {
-      this.funcionario = new Funcionario();
+        this.funcionario = new Funcionario();
     }
 	
+	//Chamado pelo botão remover da tabela
+	// public void remover() {
+	// 	if (this.funcionarioDAO.delete(this.funcionario)) {
+	// 		this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cliente Removido com sucesso!!!", null));
+	// 		this.listaCliente.remove(this.cliente);
+	// 	} else 
+			//this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Falha ao Remover cliente", null));
+		//Após excluir usuário é necessário recarregar lista que popula tabela com os novos dados
+		//this.listaCamiseta = camisetaDAO.listAll();
+        //Limpa seleção de usuário
+	// 	this.cliente = null;
+    //     PrimeFaces.current().ajax().update("form:messages", "form:dt-clientes");
+	// }	
 	
 	//Chamado ao salvar cadastro de usuário (novo)
 	public void salvarNovo() {
 		if (this.funcionarioDAO.insert(this.funcionario)) {
+            this.listaFuncionarios.add(this.funcionario);
             PrimeFaces.current().executeScript("PF('funcionarioDialog').hide()");
             PrimeFaces.current().ajax().update("form:dt-funcionario");
-            this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Funcionario cadastrado com sucesso ", null));
+            this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Funcionario Criado com sucesso!!!", null));
 		} else{
-            this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Falha ao Cadastrar Funcionario", null));
-	    } 
-		
-    }
+        	this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Falha ao Criar Funcioario", null));
+        }
+	}
 	
+	//Chamado ao salvar cadastro de usuário (alteracao)
+	// public void salvarAlteracao() {
+	// 	if (this.funcionarioDAO.update(this.funcionario)) {
+	// 			PrimeFaces.current().executeScript("PF('clienteDialog').hide()");
+	// 			PrimeFaces.current().ajax().update("form:dt-cliente");
+	// 			this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cliente Atualizado com sucesso", null));
+	// 	} else{
+    //     	this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Falha ao Atualizar Cliente", null));
+    //     }
+	// }
 	
 	//GETs e SETs
 	//GETs são necessários para elementos visíveis em tela
 	//SETs são necessários para elementos que serão editados em tela
-	
-
-    public List<Funcionario> getListaFuncionarios() {
-        return listaFuncionarios;
-    }
-
-    public void setListaFuncionarios(List<Funcionario> listaFuncionarios) {
-        this.listaFuncionarios = listaFuncionarios;
-    }
-
-    	
-	public FuncionarioDAO getFuncionarioDAO() {
-        return funcionarioDAO;
-    }
-
-    public void setFuncionarioDAO(FuncionarioDAO funcionarioDAO) {
-        this.funcionarioDAO = funcionarioDAO;
-    }
-
-    public Funcionario getFuncionario() {
+	public Funcionario getFuncionario() {
         return funcionario;
     }
 
     public void setFuncionario(Funcionario funcionario) {
         this.funcionario = funcionario;
     }
-}
 
+	public List<Funcionario> getListaFuncionarios() {
+        return listaFuncionarios;
+    }
+
+    public void setListaFuncionarios(List<Funcionario> listaFuncionarios) {
+        this.listaFuncionarios = listaFuncionarios;
+    }
+}
