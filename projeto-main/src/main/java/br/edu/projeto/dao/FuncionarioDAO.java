@@ -86,15 +86,22 @@ public class FuncionarioDAO implements Serializable{
     	return resultado;
     }
     
-    public Boolean update(Funcionario c) {
+    public Boolean update(Funcionario f) {
     	Boolean resultado = false;
     	Connection con = null;
     	PreparedStatement ps = null;
     	try {
 	    	con = this.ds.getConnection();
 	    	try {				
-				ps = con.prepareStatement("UPDATE camiseta SET tamanho = ?, descricao = ? WHERE id_camiseta = ?");
-				ps.setString(1, c.getCpf());
+				ps = con.prepareStatement("UPDATE funcionario SET nome = ?, sobre_nome = ?, tipo_funcionario =?, email =?, phone_number=?, senha =?, confirmacao_senha =? WHERE cpf = ?");
+				ps.setString(1, f.getNome());
+				ps.setString(2, f.getSobre_nome());
+				ps.setString(3, f.getTipo_funcionario());
+				ps.setString(4, f.getEmail());
+				ps.setString(5, f.getPhone_number());
+				ps.setString(6, f.getSenha());
+				ps.setString(7, f.getConfirmacao_senha());
+				ps.setString(8, f.getCpf());
 				ps.execute();	
 				resultado = true;
 			} catch (SQLException e) {e.printStackTrace();}
@@ -106,15 +113,15 @@ public class FuncionarioDAO implements Serializable{
     	return resultado;
     }
     
-    public Boolean delete(Funcionario c) {
+    public Boolean delete(Funcionario f) {
     	Boolean resultado = false;
     	Connection con = null;
     	PreparedStatement ps = null;
     	try {
 	    	con = this.ds.getConnection();
 	    	try {				
-				ps = con.prepareStatement("DELETE FROM camiseta WHERE id_camiseta = ?");
-				ps.setString(1, c.getCpf());
+				ps = con.prepareStatement("DELETE FROM funcionario WHERE cpf = ?");
+				ps.setString(1, f.getCpf());
 				ps.execute();
 				resultado = true;
 			} catch (SQLException e) {e.printStackTrace();}

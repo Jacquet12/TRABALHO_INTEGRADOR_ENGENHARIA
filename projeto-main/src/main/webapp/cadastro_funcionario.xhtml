@@ -33,27 +33,27 @@
                         </div>
                         <div class="field">
                             <p:outputLabel for="nome">NOME</p:outputLabel>
-                            <h:inputText id="nome" value="#{funcionarioController.funcionario.nome}" required="true" />
+                            <p:inputText id="nome" value="#{funcionarioController.funcionario.nome}" required="true" />
                         </div>
 
                         <div class="field">
                             <p:outputLabel for="sobre_nome">SOBRE NOME</p:outputLabel>
-                            <h:inputText id="sobre_nome" value="#{funcionarioController.funcionario.sobre_nome}" required="true" />
+                            <p:inputText id="sobre_nome" value="#{funcionarioController.funcionario.sobre_nome}" required="true" />
                         </div>
 
                         <div class="field">
                             <p:outputLabel for="tipo_funcionario">TIPO FUNCIONARIO</p:outputLabel>
-                            <h:inputText id="tipo_funcionario" value="#{funcionarioController.funcionario.tipo_funcionario}" required="true" />
+                            <p:inputText id="tipo_funcionario" value="#{funcionarioController.funcionario.tipo_funcionario}" required="true" />
                         </div>
 
                         <div class="field">
                             <p:outputLabel for="email">EMAIL</p:outputLabel>
-							<h:inputText id="email" value="#{funcionarioController.funcionario.email}" required="true" />
+							<p:inputText id="email" value="#{funcionarioController.funcionario.email}" required="true" />
                         </div>
 
                         <div class="field">
                             <p:outputLabel for="phone_number">PHONE NUMBER</p:outputLabel>
-                            <h:inputText id="phone_number" value="#{funcionarioController.funcionario.phone_number}" required="true" />
+                            <p:inputText id="phone_number" value="#{funcionarioController.funcionario.phone_number}" required="true" />
                         </div>
 
                         <div class="field">
@@ -90,19 +90,48 @@
 
 
         <h:form id="form">
+            
             <p:growl id="messages" showDetail="true" />
+            <div class="title">
+                <h1>Fazer aqui o seu Cadastro</h1>
+            </div>
+            <div>
+                <p:toolbar>
+                    <p:toolbarGroup>
+                        <div class="space"></div>
+                        <p:commandButton value="Novo" icon="pi pi-plus" actionListener="#{funcionarioController.novoCadastro()}"
+                            update=":dialogs:funcionario-conteudo-dialog" oncomplete="PF('funcionarioDialog').show()"
+                            styleClass="ui-button-success" style="margin-right: .5rem">
+                            <p:resetInput target=":dialogs:funcionario-conteudo-dialog" />
+                        </p:commandButton>
+                    </p:toolbarGroup>
+                </p:toolbar>
+                
+                <style>
+                    .space {
+                        margin-bottom: 1rem; /* Adicione a margem inferior desejada */
+                        margin-top: 40px;
+                    }
+                    .title h1{
+                        color: midnightblue;
+                    }
 
-            <p:toolbar>
-                <p:toolbarGroup>
-                    <p:commandButton value="Novo" icon="pi pi-plus" actionListener="#{funcionarioController.novoCadastro()}"
-                        update=":dialogs:funcionario-conteudo-dialog" oncomplete="PF('funcionarioDialog').show()"
-                        styleClass="ui-button-success" style="margin-right: .5rem">
-                        <p:resetInput target=":dialogs:funcionario-conteudo-dialog" />
-                    </p:commandButton>
-                </p:toolbarGroup>
-            </p:toolbar>
+                    /* .field inputText[type="email"],
+                    .field inputText[type="nome"],
+                    .field input[type="phone_number"],
+                    .field[type="senha"] {
+                        width: 100%;
+                        padding: 10px;
+                        margin-bottom: 10px;
+                        border: 1px solid #dddddd;
+                        border-radius: 3px;
+                    } */
+                </style>
+            </div>
+          
+            
 
-            <p:dataTable id="dt-funcionario" widgetVar="dtFuncionario" var="funcionario" value="#{funcionarioController.listaFuncionarios}">
+            <!-- <p:dataTable id="dt-funcionario" widgetVar="dtFuncionario" var="funcionario" value="#{funcionarioController.listaFuncionarios}">
                 <f:facet name="header">
                     <div>
                         <span style="font-weight: bold">Funcionario</span>
@@ -140,9 +169,9 @@
 				
                 <p:column headerText="confimacao_senha">
                     <h:outputText value="#{funcionario.confirmacao_senha}" />
-                </p:column>
+                </p:column> -->
 
-                <p:column>
+                <!-- <p:column>
                     <p:commandButton icon="pi pi-pencil" update=":dialogs:funcionario-conteudo-dialog" 
                         oncomplete="PF('funcionarioDialog').show()"
                         styleClass="edit-button rounded-button ui-button-success" process="@this">
@@ -153,9 +182,9 @@
                                      process="@this" oncomplete="PF('removerFuncionarioDialog').show()">
                         <f:setPropertyActionListener value="#{funcionario}" target="#{funcionarioController.funcionario}" />
                     </p:commandButton>
-                </p:column>
-
-            </p:dataTable>
+                </p:column> -->
+<!-- 
+            </p:dataTable> -->
         </h:form>
 
     </ui:define>
