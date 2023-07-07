@@ -1,0 +1,64 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #2f2f32;
+    margin: 0;
+    padding: 20px;
+  }
+  
+  .field label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333333;
+  }
+  
+  .field input[type="email"],
+  .field input[type="text"],
+  .field input[type="tel"],
+  .field input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #dddddd;
+    border-radius: 3px;
+  }
+  
+  .field .cpf-input {
+    position: relative;
+  }
+  
+  .field .cpf-input input[type="text"] {
+    padding-right: 10px;
+  }
+  
+  .field .confirm-password-input {
+    margin-top: 20px;
+  }
+  
+  .field .confirm-password-input label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333333;
+  }
+  
+  .field .confirm-password-input input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #dddddd;
+    border-radius: 3px;
+  }
+  
+  .button-geral div {
+    display: inline-flex;
+    margin-right: 50px;
+  }
+  
+  .button-cancel input {
+    background-color: red;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  

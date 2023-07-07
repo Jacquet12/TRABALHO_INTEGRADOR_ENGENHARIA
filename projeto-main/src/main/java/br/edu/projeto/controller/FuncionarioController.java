@@ -78,16 +78,16 @@ public class FuncionarioController implements Serializable {
         }
 	}
 	
-	//Chamado ao salvar cadastro de usuário (alteracao)
-	// public void salvarAlteracao() {
-	// 	if (this.funcionarioDAO.update(this.funcionario)) {
-	// 			PrimeFaces.current().executeScript("PF('clienteDialog').hide()");
-	// 			PrimeFaces.current().ajax().update("form:dt-cliente");
-	// 			this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cliente Atualizado com sucesso", null));
-	// 	} else{
-    //     	this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Falha ao Atualizar Cliente", null));
-    //     }
-	// }
+	
+	public void salvarAlteracao() {
+		if (this.funcionarioDAO.update(this.funcionario)) {
+				PrimeFaces.current().executeScript("PF('clienteDialog').hide()");
+				PrimeFaces.current().ajax().update("form:dt-cliente");
+				this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cliente Atualizado com sucesso", null));
+		} else{
+        	this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Falha ao Atualizar Cliente", null));
+        }
+	}
 	
 	//GETs e SETs
 	//GETs são necessários para elementos visíveis em tela

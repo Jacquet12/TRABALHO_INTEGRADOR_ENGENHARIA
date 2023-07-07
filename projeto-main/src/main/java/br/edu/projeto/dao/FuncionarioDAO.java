@@ -86,45 +86,43 @@ public class FuncionarioDAO implements Serializable{
     	return resultado;
     }
     
-    // public Boolean update(Camiseta c) {
-    // 	Boolean resultado = false;
-    // 	Connection con = null;
-    // 	PreparedStatement ps = null;
-    // 	try {
-	//     	con = this.ds.getConnection();
-	//     	try {				
-	// 			ps = con.prepareStatement("UPDATE camiseta SET tamanho = ?, descricao = ? WHERE id_camiseta = ?");
-	// 			ps.setString(1, c.getTamanho());
-	// 			ps.setString(2, c.getDescricao());
-	// 			ps.setLong(3, c.getIdCamiseta());
-	// 			ps.execute();	
-	// 			resultado = true;
-	// 		} catch (SQLException e) {e.printStackTrace();}
-    // 	} catch (SQLException e) {e.printStackTrace();
-    // 	} finally {
-	// 		DbUtil.closePreparedStatement(ps);
-	// 		DbUtil.closeConnection(con);
-	// 	}
-    // 	return resultado;
-    // }
+    public Boolean update(Funcionario c) {
+    	Boolean resultado = false;
+    	Connection con = null;
+    	PreparedStatement ps = null;
+    	try {
+	    	con = this.ds.getConnection();
+	    	try {				
+				ps = con.prepareStatement("UPDATE camiseta SET tamanho = ?, descricao = ? WHERE id_camiseta = ?");
+				ps.setString(1, c.getCpf());
+				ps.execute();	
+				resultado = true;
+			} catch (SQLException e) {e.printStackTrace();}
+    	} catch (SQLException e) {e.printStackTrace();
+    	} finally {
+			DbUtil.closePreparedStatement(ps);
+			DbUtil.closeConnection(con);
+		}
+    	return resultado;
+    }
     
-    // public Boolean delete(Camiseta c) {
-    // 	Boolean resultado = false;
-    // 	Connection con = null;
-    // 	PreparedStatement ps = null;
-    // 	try {
-	//     	con = this.ds.getConnection();
-	//     	try {				
-	// 			ps = con.prepareStatement("DELETE FROM camiseta WHERE id_camiseta = ?");
-	// 			ps.setLong(1, c.getIdCamiseta());
-	// 			ps.execute();
-	// 			resultado = true;
-	// 		} catch (SQLException e) {e.printStackTrace();}
-    // 	} catch (SQLException e) {e.printStackTrace();
-    // 	} finally {
-	// 		DbUtil.closePreparedStatement(ps);
-	// 		DbUtil.closeConnection(con);
-	// 	}
-    // 	return resultado;
-    // }
+    public Boolean delete(Funcionario c) {
+    	Boolean resultado = false;
+    	Connection con = null;
+    	PreparedStatement ps = null;
+    	try {
+	    	con = this.ds.getConnection();
+	    	try {				
+				ps = con.prepareStatement("DELETE FROM camiseta WHERE id_camiseta = ?");
+				ps.setString(1, c.getCpf());
+				ps.execute();
+				resultado = true;
+			} catch (SQLException e) {e.printStackTrace();}
+    	} catch (SQLException e) {e.printStackTrace();
+    	} finally {
+			DbUtil.closePreparedStatement(ps);
+			DbUtil.closeConnection(con);
+		}
+    	return resultado;
+    }
 }

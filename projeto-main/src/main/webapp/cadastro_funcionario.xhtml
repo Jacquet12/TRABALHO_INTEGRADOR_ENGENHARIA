@@ -14,6 +14,7 @@
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:p="http://primefaces.org/ui"
     template="/WEB-INF/templates/default.xhtml">
+    <h:outputStylesheet library="css" name="cadastroFuncionario.css" />
 
     <!-- Usado para definir uso do Template -->
     <!-- O template só serve para uma melhor organização do código e para evitar a repetição de código -->
@@ -23,7 +24,7 @@
         <!-- Lembre-se que o uso de formulários só não é necessário para elementos que são estáticos (sem ação, animação, conteúdo dinâmico) -->
         <h:form id="dialogs">
             <p:growl id="messages" />
-            <p:dialog header="Novo Funcionario" showEffect="fade" modal="true" widgetVar="fucionarioDialog" responsive="true">
+            <p:dialog header="Novo Funcionario" showEffect="fade" modal="true" widgetVar="funcionarioDialog" responsive="true">
                 <p:outputPanel id="funcionario-conteudo-dialog" class="ui-fluid">
                     <p:outputPanel rendered="#{not empty funcionarioController.funcionario}">
                         <div class="field">
@@ -57,13 +58,15 @@
 
                         <div class="field">
                             <p:outputLabel for="senha">SENHA</p:outputLabel>
-                            <h:inputText id="senha" value="#{funcionarioController.funcionario.senha}" required="true" />
+                            <p:password id="senha" value="#{funcionarioController.funcionario.senha}" required="true" />
                         </div>
+                        
 
                         <div class="field">
                             <p:outputLabel for="confimacao_senha">CONFIRMACAO SENHA</p:outputLabel>
-                            <h:inputText id="confimacao_senha" value="#{funcionarioController.funcionario.confirmacao_senha}" required="true" />
+                            <p:password id="confimacao_senha" value="#{funcionarioController.funcionario.confirmacao_senha}" required="true" />
                         </div>
+                        
                     </p:outputPanel>
                 </p:outputPanel>
 
