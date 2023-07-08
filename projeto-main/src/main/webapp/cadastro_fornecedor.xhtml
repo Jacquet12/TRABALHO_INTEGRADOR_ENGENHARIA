@@ -37,53 +37,48 @@
                         </div>
 
                         <div class="field">
-                            <p:outputLabel for="sobre_nome">SOBRE NOME</p:outputLabel>
-                            <p:inputText id="sobre_nome" value="#{funcionarioController.funcionario.sobre_nome}" required="true" />
+                            <p:outputLabel for="tipoDeFornecedor">SOBRE NOME</p:outputLabel>
+                            <p:inputText id="tipoDeFornecedor" value="#{fornecedorController.fornecedor.sobre_nome}" required="true" />
                         </div>
 
                         <div class="field">
-                            <p:outputLabel for="tipo_funcionario">TIPO FUNCIONARIO</p:outputLabel>
-                            <p:inputText id="tipo_funcionario" value="#{funcionarioController.funcionario.tipo_funcionario}" required="true" />
+                            <p:outputLabel for="contato">CONTATO</p:outputLabel>
+                            <p:inputText id="contato" value="#{fornecedorController.fornecedor.contato}" required="true" />
                         </div>
 
                         <div class="field">
-                            <p:outputLabel for="email">EMAIL</p:outputLabel>
-							<p:inputText id="email" value="#{funcionarioController.funcionario.email}" required="true" />
+                            <p:outputLabel for="pais">pais</p:outputLabel>
+							<p:inputText id="pais" value="#{fornecedorController.fornecedor.pais}" required="true" />
                         </div>
 
                         <div class="field">
-                            <p:outputLabel for="phone_number">PHONE NUMBER</p:outputLabel>
-                            <p:inputText id="phone_number" value="#{funcionarioController.funcionario.phone_number}" required="true" />
+                            <p:outputLabel for="funcionarioCpf"> NF.CPFU</p:outputLabel>
+                            <p:inputText id="funcionarioCpf" value="#{fornecedorController.fornecedor.funcionarioCpf}" required="true" />
                         </div>
 
                         <div class="field">
-                            <p:outputLabel for="senha">SENHA</p:outputLabel>
-                            <p:password id="senha" value="#{funcionarioController.funcionario.senha}" required="true" />
+                            <p:outputLabel for="tipoFuncionario">tipoFuncionario</p:outputLabel>
+                            <p:password id="tipoFuncionario" value="#{fornecedorController.fornecedor.tipoFuncionario}" required="true" />
                         </div>
                         
-
-                        <div class="field">
-                            <p:outputLabel for="confirmacao_senha">CONFIRMACAO SENHA</p:outputLabel>
-                            <p:password id="confirmacao_senha" value="#{funcionarioController.funcionario.confirmacao_senha}" required="true" />
-                        </div>
                         
                     </p:outputPanel>
                 </p:outputPanel>
 
                 <f:facet name="footer">
-                    <p:commandButton value="Salvar Novo" icon="pi pi-check" actionListener="#{funcionarioController.salvarNovo()}"
-                        update="funcionario-conteudo-dialog dialogs:messages" process="funcionario-conteudo-dialog @this" />
-                    <p:commandButton value="Salvar Alteração" icon="pi pi-check" actionListener="#{funcionarioController.salvarAlteracao()}"
-                        update="funcionario-conteudo-dialog dialogs:messages" process="funcionario-conteudo-dialog @this" />
-                    <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('funcionarioDialog').hide()" class="ui-button-secondary" type="button" />
+                    <p:commandButton value="Salvar Novo" icon="pi pi-check" actionListener="#{fornecedorController.salvarNovo()}"
+                        update="fornecedor-conteudo-dialog dialogs:messages" process="fornecedor-conteudo-dialog @this" />
+                    <p:commandButton value="Salvar Alteração" icon="pi pi-check" actionListener="#{fornecedorController.salvarAlteracao()}"
+                        update="funcionario-conteudo-dialog dialogs:messages" process="fornecedor-conteudo-dialog @this" />
+                    <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('fornecedorDialog').hide()" class="ui-button-secondary" type="button" />
                 </f:facet>
             </p:dialog>
 
-            <p:confirmDialog widgetVar="removerFuncionarioDialog" showEffect="fade" width="300"
-                message="Desejar remover este funcionario" header="Confirm" severity="warn">
+            <p:confirmDialog widgetVar="removerFornecedorDialog" showEffect="fade" width="300"
+                message="Desejar remover este fornecedor" header="Confirm" severity="warn">
                 <p:commandButton value="Sim" icon="pi pi-check" actionListener="#{funcionarioController.remover}"
-                    process="@this" oncomplete="PF('removerFuncionarioDialog').hide()" />
-                <p:commandButton value="Não" type="button" styleClass="ui-button-secondary" icon="pi pi-times" onclick="PF('removerFuncionarioDialog').hide()" />
+                    process="@this" oncomplete="PF('removerFornecedorDialog').hide()" />
+                <p:commandButton value="Não" type="button" styleClass="ui-button-secondary" icon="pi pi-times" onclick="PF('removerFornecedorDialog').hide()" />
             </p:confirmDialog>
 
         </h:form>
@@ -93,16 +88,16 @@
             
             <p:growl id="messages" showDetail="true" />
             <div class="title">
-                <h1>Fazer aqui o seu Cadastro</h1>
+                <h1>Cadastrar um Fornecedor</h1>
             </div>
             <div>
                 <p:toolbar>
                     <p:toolbarGroup>
                         <div class="space"></div>
                         <p:commandButton value="Novo" icon="pi pi-plus" actionListener="#{funcionarioController.novoCadastro()}"
-                            update=":dialogs:funcionario-conteudo-dialog" oncomplete="PF('funcionarioDialog').show()"
+                            update=":dialogs:fornecedor-conteudo-dialog" oncomplete="PF('fornecedorDialog').show()"
                             styleClass="ui-button-success" style="margin-right: .5rem">
-                            <p:resetInput target=":dialogs:funcionario-conteudo-dialog" />
+                            <p:resetInput target=":dialogs:fornecedor-conteudo-dialog" />
                         </p:commandButton>
                     </p:toolbarGroup>
                 </p:toolbar>
