@@ -6,6 +6,7 @@ public class Fornecedor {
     private String tipoDeFornecedor;
     private String contato;
     private String pais;
+    private String tipoDeProduto;
     private String funcionarioCpf;
     private String tipoFuncionario;
 
@@ -52,6 +53,11 @@ public class Fornecedor {
     public void setTipoFuncionario(String tipoFuncionario) {
         this.tipoFuncionario = tipoFuncionario;
     }
-    public void setEmail(String string) {
+
+    public String getTipoDeProduto() {
+        return tipoDeProduto;
+    }
+    public void setTipoDeProduto(String tipoDeProduto) {
+        this.tipoDeProduto = tipoDeProduto;
     }
 }
