@@ -15,8 +15,8 @@ import org.primefaces.PrimeFaces;
 import br.edu.projeto.dao.FornecedorDAO;
 import br.edu.projeto.dao.FuncionarioDAO;
 import br.edu.projeto.model.Fornecedor;
-import br.edu.projeto.model.Funcionario;
-
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 
 @ViewScoped
 @Named
@@ -42,6 +42,7 @@ public class FornecedorController  implements Serializable{
     @PostConstruct
     public void init() {
     	//Inicializa elementos importantes
+        novoCadastro();
     	this.listaFornecedores = fornecedorDAO.listAll();
     }
 
@@ -73,6 +74,17 @@ public class FornecedorController  implements Serializable{
         	this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Falha ao Atualizar Fornecedor", null));
         }
 	}
+
+    public void salvarNovo() {
+        if (this.fornecedorDAO.insert(this.fornecedor)) {
+            this.listaFornecedores.add(this.fornecedor);
+            PrimeFaces.current().executeScript("PF('fornecedorDialog').hide()");
+            PrimeFaces.current().ajax().update("form:dt-fornecedor");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Fornecedor Cadastrado com sucesso!!!", null));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Falha ao Cadastrar Fornecedor", null));
+        }
+    }
 
     public Fornecedor getFornecedor() {
         return fornecedor;

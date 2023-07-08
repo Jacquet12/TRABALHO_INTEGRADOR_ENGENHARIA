@@ -57,7 +57,7 @@ public class FornecedorDAO implements  Serializable {
     	try {
 	    	con = this.ds.getConnection();
 	    	try {				
-				ps = con.prepareStatement("INSERT INTO fornecedor (cnpj, nome_fornecedor, contato,pais, funcionario_cpf, tipo_funcionario,tipo_de_produto) VALUES (?,?,?,?,?,?,?)");
+				ps = con.prepareStatement("INSERT INTO fornecedor (cnpj, nome_fornecedor, contato,pais, funcionario_cpf, tipo_de_fornecedor,tipo_de_produto,tipo_funcionario) VALUES (?,?,?,?,?,?,?,?)");
 				ps.setString(1, f.getCnpj());
 				ps.setString(2, f.getNomeFornecedor());
                 ps.setString(3, f.getContato());
@@ -65,6 +65,7 @@ public class FornecedorDAO implements  Serializable {
                 ps.setString(5, f.getFuncionarioCpf());
                 ps.setString(6, f.getTipoDeFornecedor());
 				ps.setString(7, f.getTipoDeProduto());
+				ps.setString(8, f.getTipoFuncionario());
 				ps.execute();
 				resultado = true;
 			} catch (SQLException e) {e.printStackTrace();}
