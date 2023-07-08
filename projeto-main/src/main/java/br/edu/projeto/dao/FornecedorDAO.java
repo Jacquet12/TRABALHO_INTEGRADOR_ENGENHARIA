@@ -49,23 +49,66 @@ public class FornecedorDAO implements  Serializable {
         return fornecedores;
     }
 
-    public Boolean insert(Funcionario f) {
+    public Boolean insert(Fornecedor f) {
     	Boolean resultado = false;
     	Connection con = null;
     	PreparedStatement ps = null;
     	try {
 	    	con = this.ds.getConnection();
 	    	try {				
-				ps = con.prepareStatement("INSERT INTO funcionario (cpf, nome, sobre_nome,tipo_funcionario, email, phone_number, senha, confirmacao_senha) VALUES (?,?,?,?,?,?,?,?)");
-				ps.setString(1, f.getCpf());
-				ps.setString(2, f.getNome());
-                ps.setString(3, f.getSobre_nome());
-                ps.setString(4, f.getTipo_funcionario());
-                ps.setString(5, f.getEmail());
-                ps.setString(6, f.getPhone_number());
-                ps.setString(7, f.getSenha());
-                ps.setString(8, f.getConfirmacao_senha());
+				ps = con.prepareStatement("INSERT INTO fornecedor (cnpj, nome_fornecedor, contato,pais, funcionario_cpf, tipo_funcionario) VALUES (?,?,?,?,?,?)");
+				ps.setString(1, f.getCnpj());
+				ps.setString(2, f.getNomeFornecedor());
+                ps.setString(3, f.getContato());
+                ps.setString(4, f.getPais());
+                ps.setString(5, f.getFuncionarioCpf());
+                ps.setString(6, f.getTipoDeFornecedor());
 				ps.execute();
+				resultado = true;
+			} catch (SQLException e) {e.printStackTrace();}
+    	} catch (SQLException e) {e.printStackTrace();
+    	} finally {
+			DbUtil.closePreparedStatement(ps);
+			DbUtil.closeConnection(con);
+		}
+    	return resultado;
+    }
+
+    public boolean delete(Fornecedor f) {
+        Boolean resultado = false;
+    	Connection con = null;
+    	PreparedStatement ps = null;
+    	try {
+	    	con = this.ds.getConnection();
+	    	try {				
+				ps = con.prepareStatement("DELETE FROM fornecedor WHERE cnpj = ?");
+				ps.setString(1, f.getCnpj());
+				ps.execute();
+				resultado = true;
+			} catch (SQLException e) {e.printStackTrace();}
+    	} catch (SQLException e) {e.printStackTrace();
+    	} finally {
+			DbUtil.closePreparedStatement(ps);
+			DbUtil.closeConnection(con);
+		}
+    	return resultado;
+    }
+
+    public boolean update(Fornecedor f) {
+        Boolean resultado = false;
+    	Connection con = null;
+    	PreparedStatement ps = null;
+    	try {
+	    	con = this.ds.getConnection();
+	    	try {				
+				ps = con.prepareStatement("UPDATE fornecedor SET nome_fornecedor = ?, tipo_de_fornecedor = ?, contato =?, pais =?, funcionario_cpf=?, tipo_funcionario =? WHERE cnpj = ?");
+				ps.setString(1, f.getNomeFornecedor());
+				ps.setString(2, f.getTipoDeFornecedor());
+				ps.setString(3, f.getContato());
+				ps.setString(4, f.getPais());
+				ps.setString(5, f.getFuncionarioCpf());
+				ps.setString(6, f.getCnpj());
+				ps.execute();	
 				resultado = true;
 			} catch (SQLException e) {e.printStackTrace();}
     	} catch (SQLException e) {e.printStackTrace();

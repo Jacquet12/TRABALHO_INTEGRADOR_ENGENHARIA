@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!-- Define bibliotecas(tags) usadas na página -->
+<!-- Pode-se usar elementos HTML padrão misturados com os JSF e Primefaces sem problemas -->
+<!-- As tags ui, h e f são do JSF -->
+<!-- ui são para elementos de organização (templates) e automatização (laços e condicionais) -->
+<!-- h são reimplementações de elementos HTML padrão que fornecem algumas funções/facilidades adicionais -->
+<!-- f são para comunicação/transmissão de parâmetros entre páginas e para controle de requisições AJAX -->
+<!-- A tag p é do Primefaces, ela reimplementa as tags h com ainda mais funcionalidades e fornece tags adicionais com recursos avançados de Javascript e CSS embutidos -->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    template="/WEB-INF/templates/default.xhtml">
+    <h:outputStylesheet library="css" name="cadastroFuncionario.css" />
+
+    <!-- Usado para definir uso do Template -->
+    <!-- O template só serve para uma melhor organização do código e para evitar a repetição de código -->
+    <ui:define name="content">
+
+        <!-- Define formulário para Dialogs (elementos estilo Pop-up) -->
+        <!-- Lembre-se que o uso de formulários só não é necessário para elementos que são estáticos (sem ação, animação, conteúdo dinâmico) -->
+        <h:form id="dialogs">
+            <p:growl id="messages" />
+            <p:dialog header="Novo Fornecedor" showEffect="fade" modal="true" widgetVar="fornecedorDialog" responsive="true">
+                <p:outputPanel id="fornecedor-conteudo-dialog" class="ui-fluid">
+                    <p:outputPanel rendered="#{not empty fornecedorController.fornecedor}">
+                        <div class="field">
+                            <p:outputLabel for="cpf">CNPJ</p:outputLabel>
+                            <p:inputText id="cpf" value="#{fornecedorController.fornecedor.cnpj}" required="true" />
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="nome">NOME FORNECEDOR</p:outputLabel>
+                            <p:inputText id="nome" value="#{fornecedorController.fornecedor.nomeFornecedor}" required="true" />
+                        </div>
+
+                        <div class="field">
+                            <p:outputLabel for="sobre_nome">SOBRE NOME</p:outputLabel>
+                            <p:inputText id="sobre_nome" value="#{funcionarioController.funcionario.sobre_nome}" required="true" />
+                        </div>
+
+                        <div class="field">
+                            <p:outputLabel for="tipo_funcionario">TIPO FUNCIONARIO</p:outputLabel>
+                            <p:inputText id="tipo_funcionario" value="#{funcionarioController.funcionario.tipo_funcionario}" required="true" />
+                        </div>
+
+                        <div class="field">
+                            <p:outputLabel for="email">EMAIL</p:outputLabel>
+							<p:inputText id="email" value="#{funcionarioController.funcionario.email}" required="true" />
+                        </div>
+
+                        <div class="field">
+                            <p:outputLabel for="phone_number">PHONE NUMBER</p:outputLabel>
+                            <p:inputText id="phone_number" value="#{funcionarioController.funcionario.phone_number}" required="true" />
+                        </div>
+
+                        <div class="field">
+                            <p:outputLabel for="senha">SENHA</p:outputLabel>
+                            <p:password id="senha" value="#{funcionarioController.funcionario.senha}" required="true" />
+                        </div>
+                        
+
+                        <div class="field">
+                            <p:outputLabel for="confirmacao_senha">CONFIRMACAO SENHA</p:outputLabel>
+                            <p:password id="confirmacao_senha" value="#{funcionarioController.funcionario.confirmacao_senha}" required="true" />
+                        </div>
+                        
+                    </p:outputPanel>
+                </p:outputPanel>
+
+                <f:facet name="footer">
+                    <p:commandButton value="Salvar Novo" icon="pi pi-check" actionListener="#{funcionarioController.salvarNovo()}"
+                        update="funcionario-conteudo-dialog dialogs:messages" process="funcionario-conteudo-dialog @this" />
+                    <p:commandButton value="Salvar Alteração" icon="pi pi-check" actionListener="#{funcionarioController.salvarAlteracao()}"
+                        update="funcionario-conteudo-dialog dialogs:messages" process="funcionario-conteudo-dialog @this" />
+                    <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('funcionarioDialog').hide()" class="ui-button-secondary" type="button" />
+                </f:facet>
+            </p:dialog>
+
+            <p:confirmDialog widgetVar="removerFuncionarioDialog" showEffect="fade" width="300"
+                message="Desejar remover este funcionario" header="Confirm" severity="warn">
+                <p:commandButton value="Sim" icon="pi pi-check" actionListener="#{funcionarioController.remover}"
+                    process="@this" oncomplete="PF('removerFuncionarioDialog').hide()" />
+                <p:commandButton value="Não" type="button" styleClass="ui-button-secondary" icon="pi pi-times" onclick="PF('removerFuncionarioDialog').hide()" />
+            </p:confirmDialog>
+
+        </h:form>
+
+
+        <h:form id="form">
+            
+            <p:growl id="messages" showDetail="true" />
+            <div class="title">
+                <h1>Fazer aqui o seu Cadastro</h1>
+            </div>
+            <div>
+                <p:toolbar>
+                    <p:toolbarGroup>
+                        <div class="space"></div>
+                        <p:commandButton value="Novo" icon="pi pi-plus" actionListener="#{funcionarioController.novoCadastro()}"
+                            update=":dialogs:funcionario-conteudo-dialog" oncomplete="PF('funcionarioDialog').show()"
+                            styleClass="ui-button-success" style="margin-right: .5rem">
+                            <p:resetInput target=":dialogs:funcionario-conteudo-dialog" />
+                        </p:commandButton>
+                    </p:toolbarGroup>
+                </p:toolbar>
+                
+                <style>
+                    .space {
+                        margin-bottom: 1rem; /* Adicione a margem inferior desejada */
+                        margin-top: 40px;
+                    }
+                    .title h1{
+                        color: midnightblue;
+                    }
+
+                    /* .field inputText[type="email"],
+                    .field inputText[type="nome"],
+                    .field input[type="phone_number"],
+                    .field[type="senha"] {
+                        width: 100%;
+                        padding: 10px;
+                        margin-bottom: 10px;
+                        border: 1px solid #dddddd;
+                        border-radius: 3px;
+                    } */
+                </style>
+            </div>
+          
+            
+
+            <!-- <p:dataTable id="dt-funcionario" widgetVar="dtFuncionario" var="funcionario" value="#{funcionarioController.listaFuncionarios}">
+                <f:facet name="header">
+                    <div>
+                        <span style="font-weight: bold">Funcionario</span>
+                    </div>
+                </f:facet>
+
+                <p:column headerText="cpf">
+                    <h:outputText value="#{funcionario.cpf}" />
+                </p:column>
+
+                <p:column headerText="nome">
+                    <h:outputText value="#{funcionario.nome}" />
+                </p:column>
+
+                <p:column headerText="sobre_nome">
+                    <h:outputText value="#{funcionario.sobre_nome}" />
+                </p:column>
+
+				<p:column headerText="tipo_funcionario">
+                    <h:outputText value="#{funcionario.tipo_funcionario}" />
+                </p:column>
+
+                <p:column headerText="email">
+                    <h:outputText value="#{funcionario.email}" />
+                </p:column>
+				
+                <p:column headerText="phone_number">
+                    <h:outputText value="#{funcionario.phone_number}" />
+                </p:column>
+
+
+                <p:column headerText="senha">
+                    <h:outputText value="#{funcionario.senha}" />
+                </p:column>
+				
+                <p:column headerText="confimacao_senha">
+                    <h:outputText value="#{funcionario.confirmacao_senha}" />
+                </p:column> -->
+
+                <!-- <p:column>
+                    <p:commandButton icon="pi pi-pencil" update=":dialogs:funcionario-conteudo-dialog" 
+                        oncomplete="PF('funcionarioDialog').show()"
+                        styleClass="edit-button rounded-button ui-button-success" process="@this">
+                        <f:setPropertyActionListener value="#{funcionario}" target="#{funcionarioController.funcionario}" />
+                        <p:resetInput target=":dialogs:funcionario-conteudo-dialog" />
+                    </p:commandButton>
+                    <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
+                                     process="@this" oncomplete="PF('removerFuncionarioDialog').show()">
+                        <f:setPropertyActionListener value="#{funcionario}" target="#{funcionarioController.funcionario}" />
+                    </p:commandButton>
+                </p:column> -->
+<!-- 
+            </p:dataTable> -->
+        </h:form>
+
+    </ui:define>
+</ui:composition>
