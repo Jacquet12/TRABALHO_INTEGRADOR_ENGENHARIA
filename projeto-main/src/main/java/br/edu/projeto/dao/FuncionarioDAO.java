@@ -132,4 +132,39 @@ public class FuncionarioDAO implements Serializable{
 		}
     	return resultado;
     }
+
+
+
+	public Funcionario buscarFuncionarioPorEmailSenha(String email, String senha) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			con = ds.getConnection();
+			ps = con.prepareStatement("SELECT cpf, nome, sobre_nome, tipo_funcionario, email, phone_number, senha, confirmacao_senha FROM funcionario WHERE email = ? AND senha = ?");
+			ps.setString(1, email);
+			ps.setString(2, senha);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				Funcionario funcionario = new Funcionario();
+				funcionario.setCpf(rs.getString("cpf"));
+				funcionario.setNome(rs.getString("nome"));
+				funcionario.setSobre_nome(rs.getString("sobre_nome"));
+				funcionario.setTipo_funcionario(rs.getString("tipo_funcionario"));
+				funcionario.setEmail(rs.getString("email"));
+				funcionario.setPhone_number(rs.getString("phone_number"));
+				funcionario.setSenha(rs.getString("senha"));
+				funcionario.setConfirmacao_senha(rs.getString("confirmacao_senha"));
+				return funcionario;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DbUtil.closeResultSet(rs);
+			DbUtil.closePreparedStatement(ps);
+			DbUtil.closeConnection(con);
+		}
+		return null;
+	}
+	
 }

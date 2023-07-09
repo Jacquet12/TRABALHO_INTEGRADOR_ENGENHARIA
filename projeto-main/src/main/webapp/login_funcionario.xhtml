@@ -1,6 +1,7 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-BR">
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-BR"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,29 +9,24 @@
     <link rel="stylesheet" href="LoginFuncionario.css" type="text/css" />
 </head>
 <body>
-    <form class="login">
+    <h:form styleClass="login">
         <h2>LOGIN</h2>
         <div class="box-user">
-            <input type="text" name="" required="required" />
-            <label>Usuario</label>
+            <h:inputText id="email" value="#{funcionarioController.email}" required="true" />
+            <label for="email">Usuario</label>
         </div>
         <div class="box-user">
-            <input type="password" id="pass" name="password" required="required" />
-            <label>Senha</label>
+            <h:inputSecret id="senha" value="#{funcionarioController.senha}" required="true" />
+            <label for="senha">Senha</label>
         </div>
         <div>
-            <a href="#" class="forget">Forget The assword?</a>
+            <a href="#" class="forget">Forget The Password?</a>
         </div>
         <div>
-            <a href="#" class="forget1">Register</a>
+            <h:link value="Register" outcome="cadastro_funcionario.xhtml" class="forget1" />
         </div>
-        <a href="#" class="btn">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            Entrar
-        </a>
-    </form>
+        <h:commandButton styleClass="btn" value="Entrar" action="#{funcionarioController.fazerLogin}" />
+        <h:message for="senha" styleClass="error-message" />
+    </h:form>
 </body>
 </html>

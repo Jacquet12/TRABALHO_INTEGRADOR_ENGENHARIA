@@ -1,5 +1,6 @@
 package br.edu.projeto.controller;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
@@ -36,6 +37,9 @@ public class FuncionarioController implements Serializable {
 	@Inject
     private FuncionarioDAO funcionarioDAO;
 	
+
+	private String senha;
+	private String email;
 	
     private Funcionario funcionario;
     private List<Funcionario> listaFuncionarios;
@@ -45,6 +49,7 @@ public class FuncionarioController implements Serializable {
     public void init() {
     	//Inicializa elementos importantes
     	this.listaFuncionarios = funcionarioDAO.listAll();
+		funcionario = new Funcionario();
     }
 	
     //Chamado pelo botão novo
@@ -88,6 +93,26 @@ public class FuncionarioController implements Serializable {
         	this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Falha ao Atualizar Funcionario", null));
         }
 	}
+
+	public void fazerLogin() {
+		Funcionario funcionarioLogado = funcionarioDAO.buscarFuncionarioPorEmailSenha(email, senha);
+		if (funcionarioLogado != null) {
+			
+			try {
+				FacesContext.getCurrentInstance().getExternalContext().redirect("dashboard.xhtml");
+			} catch (IOException e) {
+				// Tratar qualquer exceção de redirecionamento
+				e.printStackTrace();
+			}
+		} else {
+			// Login inválido
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "O seu login esta Inválido", "Usuário ou senha incorretos");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		}
+	}
+	
+	
+
 	
 	//GETs e SETs
 	//GETs são necessários para elementos visíveis em tela
@@ -107,4 +132,21 @@ public class FuncionarioController implements Serializable {
     public void setListaFuncionarios(List<Funcionario> listaFuncionarios) {
         this.listaFuncionarios = listaFuncionarios;
     }
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
 }
