@@ -1,10 +1,17 @@
 package br.edu.projeto.model;
-import java.util.Date;
+
 
 public class Cliente {
     private String nome;
+    private String cpf ;
+    public String getCpf() {
+        return cpf;
+    }
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
     private String sobrenome;
-    private Date dataColuna;
+    private String data_nascimento;
     private String email;
     private String funcionario_cpf; 
 
@@ -21,12 +28,7 @@ public class Cliente {
         this. sobrenome=sobrenome;
     }
 
-    public Date dataColuna(){
-        return dataColuna;
-    }
-    public void setDataColuna(Date dataColuna){
-        this.dataColuna=dataColuna;
-    }
+  
     public String getEmail(){
         return email;
     }
@@ -40,5 +42,11 @@ public class Cliente {
         this.funcionario_cpf=funcionario_cpf;
     }
 
+    public String getData_nascimento() {
+        return data_nascimento;
+    }
+    public void setData_nascimento(String data_nascimento) {
+        this.data_nascimento = data_nascimento;
+    }
 
 }

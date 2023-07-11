@@ -99,7 +99,7 @@ public class FuncionarioController implements Serializable {
 		if (funcionarioLogado != null) {
 			
 			try {
-				FacesContext.getCurrentInstance().getExternalContext().redirect("dashboard.xhtml");
+				FacesContext.getCurrentInstance().getExternalContext().redirect("DashboardAdm.xhtml");
 			} catch (IOException e) {
 				// Tratar qualquer exceção de redirecionamento
 				e.printStackTrace();

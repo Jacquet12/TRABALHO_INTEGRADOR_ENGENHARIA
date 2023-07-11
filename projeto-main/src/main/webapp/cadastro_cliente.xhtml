@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="cadastroCliente.css" />
+    <title>WILOUMAGAZINE</title>
+    <style>
+        .green-button {
+            background-color: green;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h:form styleClass="Cadastrar">
+        
+        <h2 id="title">Cadastrar</h2>
+        <div class="cpf-input">
+            <label for="cpf">cpf:</label>
+            <h:inputText id="cpf" value="#{clienteController.cliente.cpf}" />
+        </div>
+
+        <div>
+            <label for="name">Nome</label>
+            <h:inputText id="name1" value="#{clienteController.cliente.nome}" required="true" />
+        </div>
+
+        <div class="sobrenome-input">
+            <label for="Sobrenome">Sobrenome</label>
+            <h:inputText id="Sobrenome" value="#{clienteController.cliente.sobrenome}" required="true" />
+        </div>
+        <div>
+            <label for="data_nascimento">data_nascimento</label>
+            <h:inputText id="data_nascimento" value="#{clienteController.cliente.data_nascimento}" required="true" validatorMessage="Data de nascimento inválida">
+                <f:validateRegex pattern="\d{2}/\d{2}/\d{4}" />
+            </h:inputText>
+        </div>
+        
+        <div>
+            <label for="email">Email</label>
+            <h:inputText id="email" value="#{clienteController.cliente.email}" required="true" />
+        </div>
+        <div>
+            <label for="cpfF">CPF do Funcionario</label>
+            <h:inputText id="cpfF" value="#{clienteController.cliente.funcionario_cpf}" required="true" />
+        </div>
+
+         <h:messages id="messages" />
+        <div>
+            <h:commandButton styleClass="green-button" value="Confirm" action="#{clienteController.salvarNovo}" />
+        </div>
+    </h:form>
+</body>
+</html>

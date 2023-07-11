@@ -1,4 +1,3 @@
-
 package br.edu.projeto.dao;
 import java.io.Serializable;
 import java.sql.Connection;
@@ -11,34 +10,34 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.sql.DataSource;
 
-import br.edu.projeto.model.Fornecedor;
+import br.edu.projeto.model.Cliente;
 
 import br.edu.projeto.util.DbUtil;
 
-public class FornecedorDAO implements  Serializable {
+public class ClienteDAO implements Serializable{
     private static final long serialVersionUID = 1L;
 
     @Inject
     private DataSource ds;
 
-    public List<Fornecedor> listAll() {
-        List<Fornecedor> fornecedores = new ArrayList<>();
+    public List<Cliente> listAll() {
+        List<Cliente> clientes = new ArrayList<>();
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
             con = ds.getConnection();
-            ps = con.prepareStatement("SELECT cnpj, nome_fornecedor, tipo_de_fornecedor, contato, pais, tipo_de_produto FROM fornecedor");
+            ps = con.prepareStatement("SELECT cpf, nome, sobrenome, data_nascimento, email FROM cliente");
             rs = ps.executeQuery();
             while (rs.next()) {
-                Fornecedor f = new Fornecedor();
-                f.setCnpj(rs.getString("cnpj"));
-                f.setNomeFornecedor(rs.getString("nome_fornecedor"));
-                f.setTipoDeFornecedor(rs.getString("tipo_de_fornecedor"));
-                f.setContato(rs.getString("contato"));
-                f.setPais(rs.getString("pais"));
-				f.setTipoDeProduto(rs.getString("tipo_de_produto"));
-                fornecedores.add(f);
+                Cliente c = new Cliente();
+                c.setCpf(rs.getString("cpf"));
+                c.setNome(rs.getString("nome"));
+                c.setData_nascimento(rs.getString("data_nascimento"));
+                c.setSobrenome(rs.getString("sobrenome"));
+                c.setEmail(rs.getString("email"));
+
+                clientes.add(c);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -47,25 +46,23 @@ public class FornecedorDAO implements  Serializable {
             DbUtil.closePreparedStatement(ps);
             DbUtil.closeConnection(con);
         }
-        return fornecedores;
+        return clientes;
     }
 
-    public Boolean insert(Fornecedor f) {
+    public Boolean insert(Cliente c) {
     	Boolean resultado = false;
     	Connection con = null;
     	PreparedStatement ps = null;
     	try {
 	    	con = this.ds.getConnection();
 	    	try {				
-				ps = con.prepareStatement("INSERT INTO fornecedor (cnpj, nome_fornecedor, contato,pais, funcionario_cpf, tipo_de_fornecedor,tipo_de_produto,tipo_funcionario) VALUES (?,?,?,?,?,?,?,?)");
-				ps.setString(1, f.getCnpj());
-				ps.setString(2, f.getNomeFornecedor());
-                ps.setString(3, f.getContato());
-                ps.setString(4, f.getPais());
-                ps.setString(5, f.getFuncionarioCpf());
-                ps.setString(6, f.getTipoDeFornecedor());
-				ps.setString(7, f.getTipoDeProduto());
-				ps.setString(8, f.getTipoFuncionario());
+				ps = con.prepareStatement("INSERT INTO cliente (cpf, nome, sobrenome, data_nascimento, email) VALUES (?,?,?,?,?)");
+				ps.setString(1, c.getCpf());
+				ps.setString(2, c.getNome());
+                ps.setString(3, c.getSobrenome());
+                ps.setString(4, c.getData_nascimento());
+                ps.setString(5, c.getEmail());
+                ps.setString(6, c.getFuncionario_cpf());
 				ps.execute();
 				resultado = true;
 			} catch (SQLException e) {e.printStackTrace();}
@@ -77,15 +74,15 @@ public class FornecedorDAO implements  Serializable {
     	return resultado;
     }
 
-    public boolean delete(Fornecedor f) {
+    public boolean delete(Cliente c) {
         Boolean resultado = false;
     	Connection con = null;
     	PreparedStatement ps = null;
     	try {
 	    	con = this.ds.getConnection();
 	    	try {				
-				ps = con.prepareStatement("DELETE FROM fornecedor WHERE cnpj = ?");
-				ps.setString(1, f.getCnpj());
+				ps = con.prepareStatement("DELETE FROM cliente WHERE cpf = ?");
+				ps.setString(1, c.getCpf());
 				ps.execute();
 				resultado = true;
 			} catch (SQLException e) {e.printStackTrace();}
@@ -97,21 +94,20 @@ public class FornecedorDAO implements  Serializable {
     	return resultado;
     }
 
-    public boolean update(Fornecedor f) {
+    public boolean update(Cliente c) {
         Boolean resultado = false;
     	Connection con = null;
     	PreparedStatement ps = null;
     	try {
 	    	con = this.ds.getConnection();
 	    	try {				
-				ps = con.prepareStatement("UPDATE fornecedor SET nome_fornecedor = ?, tipo_de_fornecedor = ?, contato =?, pais =?, funcionario_cpf=?, tipo_funcionario =?, tipo_de_produto=? WHERE cnpj = ?");
-				ps.setString(1, f.getNomeFornecedor());
-				ps.setString(2, f.getTipoDeFornecedor());
-				ps.setString(3, f.getContato());
-				ps.setString(4, f.getPais());
-				ps.setString(5, f.getFuncionarioCpf());
-				ps.setString(6, f.getCnpj());
-				ps.setString(7, f.getTipoDeProduto());
+				ps = con.prepareStatement("UPDATE cliente SET cpf = ?, nome = ?, sobrenome =?, data_nascimento =?, email=?, funcionario_cpf=? WHERE cpf = ?");
+				ps.setString(1, c.getCpf());
+				ps.setString(2, c.getNome());
+				ps.setString(3, c.getNome());
+				ps.setString(4, c.getData_nascimento());
+				ps.setString(5, c.getEmail());
+				ps.setString(6, c.getFuncionario_cpf());
 				ps.execute();	
 				resultado = true;
 			} catch (SQLException e) {e.printStackTrace();}
@@ -122,4 +118,5 @@ public class FornecedorDAO implements  Serializable {
 		}
     	return resultado;
     }
+
 }
