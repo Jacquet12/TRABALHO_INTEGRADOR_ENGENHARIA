@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="produto.css" />
+    <title>WILOUMAGAZINE</title>
+    <style>
+        .green-button {
+            background-color: green;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h:form styleClass="Cadastrar">
+        
+        <h2 id="title">Cadastrar Produto</h2>
+        <div class="cod_produto-input">
+            <label for="cod_produto">cod_produto:</label>
+            <h:inputText id="cod_produto" value="#{produtoController.produto.codProduto}" />
+        </div>
+
+        <div>
+            <label for="name">nome</label>
+            <h:inputText id="nome" value="#{produtoController.produto.nome}" required="true" />
+        </div>
+
+        <div class="categoria-input">
+            <label for="categoria">categoria</label>
+            <h:inputText id="categoria" value="#{produtoController.produto.categoria}" required="true" />
+        </div>
+      
+        <div class="preco-input">
+            <label for="preco">preco</label>
+            <h:inputText id="preco" value="#{produtoController.produto.preco}" required="true" />
+        </div>
+
+        <div class="descricao-input">
+            <label for="descricao">descricao</label>
+            <h:inputText id="descricao" value="#{produtoController.produto.descricao}" required="true" />
+        </div>
+
+        <div>
+            <label for="fornecedor_cnpj">fornecedor_cnpj</label>
+            <h:inputText id="fornecedor_cnpj" value="#{produtoController.produto.fornecedorCnpj}" required="true" />
+        </div>
+        <div>
+            <label for="quantidade_estoque">quantidade_estoque</label>
+            <h:inputText id="quantidade_estoque" value="#{produtoController.produto.quantidadeEstoque}" required="true" />
+        </div>
+
+        <div>
+            <label for="funcionario_cpf">funcionario_cpf</label>
+            <h:inputText id="funcionario_cpf" value="#{produtoController.produto.funcionarioCpf}" required="true" />
+        </div>
+
+         <h:messages id="messages" />
+        <div>
+            <h:commandButton styleClass="green-button" value="Confirm" action="#{produtoController.salvarNovo}" />
+        </div>
+    </h:form>
+</body>
+</html>

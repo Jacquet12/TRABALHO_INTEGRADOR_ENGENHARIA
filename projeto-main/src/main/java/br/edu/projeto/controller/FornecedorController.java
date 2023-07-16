@@ -32,10 +32,6 @@ public class FornecedorController  implements Serializable{
 	
 	
     private Fornecedor fornecedor;
-
-
-  
-
     private List<Fornecedor> listaFornecedores;
 	
 	//Anotação que força execução do método após o construtor da classe ser executado

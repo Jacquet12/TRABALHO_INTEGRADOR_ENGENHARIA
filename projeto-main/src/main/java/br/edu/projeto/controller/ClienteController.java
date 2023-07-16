@@ -15,60 +15,50 @@ import org.primefaces.PrimeFaces;
 import br.edu.projeto.dao.ClienteDAO;
 import br.edu.projeto.model.Cliente;
 
-
 @ViewScoped
 @Named
-public class ClienteController  implements Serializable{
+public class ClienteController implements Serializable {
     private static final long serialVersionUID = 1L;
-    
 
     @Inject
-	private FacesContext facesContext;
-	
-	@Inject
+    private FacesContext facesContext;
+
+    @Inject
     private ClienteDAO clienteDAO;
-	
+
     private Cliente cliente;
     private List<Cliente> listaClientes;
-	
 
-
-    //Anotação que força execução do método após o construtor da classe ser executado
     @PostConstruct
     public void init() {
-    	//Inicializa elementos importantes
         novoCadastro();
-    	this.listaClientes = clienteDAO.listAll();
+        this.listaClientes = clienteDAO.listAll();
     }
 
-        //Chamado pelo botão novo
-	public void novoCadastro() {
+    public void novoCadastro() {
         this.cliente = new Cliente();
     }
-	
-	//Chamado pelo botão remover da tabela
-	public void remover() {
-		if (this.clienteDAO.delete(this.cliente)) {
-			this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cliente Removido com sucesso!!!", null));
-			this.listaClientes.remove(this.cliente);
-		} else 
-			this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Falha ao Remover cliente", null));
-		//Após excluir usuário é necessário recarregar lista que popula tabela com os novos dados
-		this.listaClientes = clienteDAO.listAll();
-        //Limpa seleção de usuário
-		this.cliente = null;
+
+    public void remover() {
+        if (this.clienteDAO.delete(this.cliente)) {
+            this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cliente Removido com sucesso!!!", null));
+            this.listaClientes.remove(this.cliente);
+        } else {
+            this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Falha ao Remover cliente", null));
+        }
+        this.cliente = null;
         PrimeFaces.current().ajax().update("form:messages", "form:dt-cliente");
-	}	
+    }
 
     public void salvarAlteracao() {
-		if (this.clienteDAO.update(this.cliente)) {
-				PrimeFaces.current().executeScript("PF('clienteDialog').hide()");
-				PrimeFaces.current().ajax().update("form:dt-cliente");
-				this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cliente Atualizado com sucesso", null));
-		} else{
-        	this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Falha ao Atualizar Cliente", null));
+        if (this.clienteDAO.update(this.cliente)) {
+            PrimeFaces.current().executeScript("PF('clienteDialog').hide()");
+            PrimeFaces.current().ajax().update("form:dt-cliente");
+            this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cliente Atualizado com sucesso", null));
+        } else {
+            this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Falha ao Atualizar Cliente", null));
         }
-	}
+    }
 
     public void salvarNovo() {
         if (this.clienteDAO.insert(this.cliente)) {
@@ -89,7 +79,6 @@ public class ClienteController  implements Serializable{
         this.cliente = cliente;
     }
 
-    	
     public ClienteDAO getClienteDAO() {
         return clienteDAO;
     }
@@ -106,4 +95,3 @@ public class ClienteController  implements Serializable{
         this.listaClientes = listaClientes;
     }
 }
-

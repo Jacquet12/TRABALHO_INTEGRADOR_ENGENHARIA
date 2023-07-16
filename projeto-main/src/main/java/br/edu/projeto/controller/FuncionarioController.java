@@ -6,10 +6,12 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+
 
 import org.primefaces.PrimeFaces;
 
@@ -74,13 +76,24 @@ public class FuncionarioController implements Serializable {
 	//Chamado ao salvar cadastro de usuário (novo)
 	public void salvarNovo() {
 		if (this.funcionarioDAO.insert(this.funcionario)) {
-            this.listaFuncionarios.add(this.funcionario);
-            PrimeFaces.current().executeScript("PF('funcionarioDialog').hide()");
-            PrimeFaces.current().ajax().update("form:dt-funcionario");
-            this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Funcionario Criado com sucesso!!!", null));
-		} else{
-        	this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Falha ao Criar Funcioario", null));
-        }
+			this.listaFuncionarios.add(this.funcionario);
+			PrimeFaces.current().executeScript("PF('funcionarioDialog').hide()");
+			PrimeFaces.current().ajax().update("form:dt-funcionario");
+			this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+				"Funcionario Criado com sucesso!!!", null));
+
+			// Redireciona o usuário para a página de login
+			try {
+				ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+				externalContext.redirect("login_funcionario.xhtml"); // Substitua "pagina_de_login.xhtml" pelo nome correto da sua página de login
+			} catch (IOException e) {
+				// Trate qualquer exceção que possa ocorrer ao redirecionar o usuário
+				e.printStackTrace();
+			}
+		} else {
+			this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Falha ao Criar Funcioario", null));
+		}
 	}
 	
 	
