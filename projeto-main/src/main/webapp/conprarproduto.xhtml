@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="Fornecedor.css" />
+    <title>WILOUMAGAZINE</title>
+    <style>
+        .green-button {
+            background-color: green;
+            color: white;
+        }
+    </style>
+</h:head>
+<body>
+    <h:form styleClass="ComprarProduto">
+
+        <h2 id="title">Comprar</h2>
+        <div class="id-input">
+            <label for="id">Id:</label>
+            <h:inputText id="id" value="#{cupomFiscalController.cupomFiscal.id}" />
+        </div>
+
+        <div>
+            <label for="cpf_funcionario">CPF Funcionário:</label>
+            <h:inputText id="cpf_funcionario" value="#{cupomFiscalController.cupomFiscal.cpfFuncionario}" required="true" />
+        </div>
+
+        <div class="cnpj_fornecedor-input">
+            <label for="cnpj_fornecedor">CNPJ Fornecedor:</label>
+            <h:inputText id="cnpj_fornecedor" value="#{cupomFiscalController.cupomFiscal.cnpjFornecedor}" required="true" />
+        </div>
+        
+        <!-- Adicione os demais campos aqui... -->
+        <div>
+            <label for="codp_produto">Código do Produto:</label>
+            <h:inputText id="codp_produto" value="#{cupomFiscalController.cupomFiscal.codProduto}" required="true" />
+        </div>
+
+        <div>
+            <label for="quantidade_adquirida">Quantidade Adquirida:</label>
+            <h:inputText id="quantidade_adquirida" value="#{cupomFiscalController.cupomFiscal.quantidadeAdquirida}" required="true" />
+        </div>
+
+        <div>
+            <label for="data_hora_compra">Data e Hora da Compra:</label>
+            <p:calendar id="data_hora_compra" value="#{cupomFiscalController.cupomFiscal.dataHoraCompra}" required="true" pattern="dd/MM/yyyy" />
+        </div>
+
+        <div>
+            <label for="forma_pagamento">Forma de Pagamento:</label>
+            <h:inputText id="forma_pagamento" value="#{cupomFiscalController.cupomFiscal.formaPagamento}" required="true" />
+        </div>
+
+        <div>
+            <label for="observacoes">Observações:</label>
+            <h:inputText id="observacoes" value="#{cupomFiscalController.cupomFiscal.observacoes}" required="true" />
+        </div>
+        
+        <h:messages id="messages" />
+
+        <div>
+            <h:commandButton value="Realizar Compra" action="#{cupomFiscalController.realizarCompra}" />
+        </div>
+    </h:form>
+</body>
+</html>

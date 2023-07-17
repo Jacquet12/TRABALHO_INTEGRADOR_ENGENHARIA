@@ -1,14 +1,27 @@
 package br.edu.projeto.model;
 
+import java.math.BigDecimal;
+
 public class Produto {
 
-    private int quantidadeEstoque;
+    private int quantidadeEstoque = 0;
     private String funcionarioCpf;
     private String codProduto;
     private String categoria;
     private String descricao;
-    private double preco;
+    private String nome;
+    private BigDecimal preco;
+
     private String fornecedorCnpj;
+
+    public BigDecimal getPreco() {
+        return preco;
+    }
+    public void setPreco(BigDecimal preco) {
+        this.preco = preco;
+    }
+   
+
     
     public String getCodProduto() {
         return codProduto;
@@ -31,13 +44,7 @@ public class Produto {
         this.nome = nome;
     }
 
-    private String nome;
-    public double getPreco() {
-        return preco;
-    }
-    public void setPreco(double preco) {
-        this.preco = preco;
-    }
+    
 
     public String getDescricao() {
         return descricao;
@@ -69,4 +76,5 @@ public class Produto {
     public void setFuncionarioCpf(String funcionarioCpf) {
         this.funcionarioCpf = funcionarioCpf;
     }
+   
 }

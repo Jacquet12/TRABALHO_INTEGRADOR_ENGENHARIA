@@ -34,7 +34,7 @@ public class ProdutoDAO implements Serializable{
                 Produto p = new Produto();
                 p.setCodProduto(rs.getString("cod_produto"));
                 p.setCategoria(rs.getString("categoria"));
-                p.setPreco(rs.getDouble("preco"));
+                p.setPreco(rs.getBigDecimal("preco"));
                 p.setDescricao(rs.getString("descricao"));
                 p.setQuantidadeEstoque(rs.getInt("quantidade_estoque"));
                 p.setFornecedorCnpj(rs.getString("fornecedor_cnpj"));
@@ -63,7 +63,7 @@ public class ProdutoDAO implements Serializable{
 				ps.setString(1, p.getCodProduto());
 				ps.setString(2, p.getNome());
                 ps.setString(3, p.getCategoria());
-                ps.setDouble(4, p.getPreco());
+                ps.setBigDecimal(4, p.getPreco());
                 ps.setString(5, p.getDescricao());
                 ps.setInt(6, p.getQuantidadeEstoque());
                 ps.setString(7, p.getFornecedorCnpj());
@@ -109,7 +109,7 @@ public class ProdutoDAO implements Serializable{
 				ps = con.prepareStatement("UPDATE produto SET nome =?, categoria = ?, preco =?,  descricao =?, quantidade_estoque = ?,fornecedor_cnpj = ?, funcionario_cpf = ? WHERE cod_produto = ?");
 				ps.setString(1, p.getNome());
 				ps.setString(2, p.getCategoria());
-				ps.setDouble(3, p.getPreco());
+				ps.setBigDecimal(3, p.getPreco());
 				ps.setString(4, p.getDescricao());
 				ps.setInt(5, p.getQuantidadeEstoque());
                 ps.setString(6, p.getFornecedorCnpj());
@@ -126,4 +126,65 @@ public class ProdutoDAO implements Serializable{
     	return resultado;
     }
 
+	public boolean atualizarQuantidadeEstoque(String codProduto, int quantidadeEstoque) {
+		Boolean resultado = false;
+		Connection con = null;
+		PreparedStatement ps = null;
+		try {
+			con = this.ds.getConnection();
+			try {
+				ps = con.prepareStatement("UPDATE produto SET quantidade_estoque = ? WHERE cod_produto = ?");
+				ps.setInt(1, quantidadeEstoque);
+				ps.setString(2, codProduto);
+				ps.execute();
+				resultado = true;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DbUtil.closePreparedStatement(ps);
+			DbUtil.closeConnection(con);
+		}
+		return resultado;
+	}
+
+	public Produto buscarPorCodigo(String codProduto) {
+        Produto produto = null;
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            con = this.ds.getConnection();
+            ps = con.prepareStatement("SELECT * FROM produto WHERE cod_produto = ?");
+            ps.setString(1, codProduto);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                // Cria um novo objeto Produto com os dados da consulta
+                produto = new Produto();
+                produto.setCodProduto(rs.getString("cod_produto"));
+                produto.setNome(rs.getString("nome"));
+                produto.setCategoria(rs.getString("categoria"));
+                produto.setPreco(rs.getBigDecimal("preco"));
+                produto.setDescricao(rs.getString("descricao"));
+                produto.setQuantidadeEstoque(rs.getInt("quantidade_estoque"));
+                produto.setFornecedorCnpj(rs.getString("fornecedor_cnpj"));
+                produto.setFuncionarioCpf(rs.getString("funcionario_cpf"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbUtil.closeResultSet(rs);
+            DbUtil.closePreparedStatement(ps);
+            DbUtil.closeConnection(con);
+        }
+
+        return produto;
+    }
+
 }
+
+
