@@ -1,3 +1,14 @@
+-- Sistema de venda 
+
+-- CREATE DATABASE SistemadeVenda;
+-- -- Excluir tabelas se existirem
+-- DROP TABLE IF EXISTS cupomFiscal;
+-- DROP TABLE IF EXISTS notaFiscal;
+-- DROP TABLE IF EXISTS Produto;
+-- DROP TABLE IF EXISTS Fornecedor;
+-- DROP TABLE IF EXISTS Cliente;
+-- DROP TABLE IF EXISTS Funcionario;
+
 -- Tabela Funcionario
 CREATE TABLE Funcionario (
     cpf VARCHAR(11) PRIMARY KEY,
