@@ -94,12 +94,6 @@ public class CupomFiscal {
         this.dataHoraCompra = dataHoraCompra;
     }
 
-    // public static java.sql.Date toSqlDate(java.util.Date utilDate) {
-    //     if (utilDate == null) {
-    //         return null;
-    //     } else {
-    //         return new java.sql.Date(utilDate.getTime());
-    //     }
-    // }
+   
 }
 

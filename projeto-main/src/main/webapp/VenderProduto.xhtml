@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="Fornecedor.css" />
+    <title>WILOUMAGAZINE</title>
+    <style>
+        .green-button {
+            background-color: green;
+            color: white;
+        }
+    </style>
+</h:head>
+<body>
+    <h:form styleClass="VendaProduto">
+
+        <h2 id="title">Venda</h2>
+
+        <div class="codNotaFiscal-input">
+            <label for="codNotaFiscal">codNotaFiscal</label>
+            <h:inputText id="codNotaFiscal" value="#{notaFiscalController.notaFiscal.codNotaFiscal}" />
+        </div>
+
+        <div>
+            <label for="data">data:</label>
+            <p:calendar id="data" value="#{notaFiscalController.notaFiscal.dataHoraCompra}" required="true" pattern="dd/MM/yyyy" />
+        </div>
+
+        <div class="funcionarioCpf-input">
+            <label for="funcionarioCpf">funcionarioCpf:</label>
+            <h:inputText id="funcionarioCpf" value="#{notaFiscalController.notaFiscal.funcionarioCpf}" required="true" />
+        </div>
+        
+        <!-- Adicione os demais campos aqui... -->
+        <div>
+            <label for="clienteCpf">clienteCpf:</label>
+            <h:inputText id="clienteCpf" value="#{notaFiscalController.notaFiscal.clienteCpf}" required="true" />
+        </div>
+
+        <div>
+            <label for="produtoCodProduto"> produtoCodProduto:</label>
+            <h:inputText id="produtoCodProduto" value="#{notaFiscalController.notaFiscal.produtoCodProduto}" required="true" />
+        </div>
+
+        <div>
+            <label for="quantidadeComprada">quantidadeComprada:</label>
+            <h:inputText id="quantidadeComprada" value="#{notaFiscalController.notaFiscal.quantidadeComprada}" />
+        </div>
+        
+        <h:messages id="messages" />
+
+        <div>
+            <h:commandButton styleClass="green-button" value="Confirmar Venda" action="#{notaFiscalController.venderProduto}" />
+
+        </div>
+    </h:form>
+</body>
+</html>

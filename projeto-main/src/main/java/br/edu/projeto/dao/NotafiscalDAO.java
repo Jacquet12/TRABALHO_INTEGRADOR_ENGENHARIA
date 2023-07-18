@@ -11,41 +11,39 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.sql.DataSource;
 
+import br.edu.projeto.model.NotaFiscal;
 import br.edu.projeto.model.CupomFiscal;
 import br.edu.projeto.model.Fornecedor;
 
 import br.edu.projeto.util.DbUtil;
 
-public class CupomFiscalDAO implements  Serializable {
+public class NotafiscalDAO implements  Serializable {
     private static final long serialVersionUID = 1L;
 
     @Inject
     private DataSource ds;
 
-     public List<CupomFiscal> listAll() {
-        List<CupomFiscal> cupomFiscals = new ArrayList<>();
+     public List<NotaFiscal> listAll() {
+        List<NotaFiscal> notaFiscals = new ArrayList<>();
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
             con = ds.getConnection();
-            ps = con.prepareStatement("SELECT id, cpf_funcionario, cnpj_fornecedor, codp_produto,  quantidade_adquirida, data_hora_compra,total_compra,forma_pagamento, observacoes FROM cupao_fiscal");
+            ps = con.prepareStatement("SELECT cod_notafiscal, produto_cod_produto, cliente_cpf, data,  funcionario_cpf, quantidade_comprada,preco_total FROM nota_fiscal");
             rs = ps.executeQuery();
             while (rs.next()) {
-                CupomFiscal c = new CupomFiscal();
-                c.setId(rs.getInt("id"));
-                c.setCpfFuncionario(rs.getString("cpf_funcionario"));
-                c.setCnpjFornecedor(rs.getString("cnpj_fornecedor"));
-                c.setCodProduto(rs.getString("codp_produto"));
-                c.setQuantidadeAdquirida(rs.getInt("quantidade_adquirida"));
+                NotaFiscal n = new NotaFiscal();
+                n.setCodNotaFiscal(rs.getString("cod_notafiscal"));
+                n.setProdutoCodProduto(rs.getString("produto_cod_produto"));
+                n.setClienteCpf(rs.getString("cliente_cpf"));
+                LocalDate dataHoraCompra = rs.getDate("data").toLocalDate();
+                n.setDataHoraCompra(dataHoraCompra);
+                n.setFuncionarioCpf(rs.getString("funcionario_cpf"));
+				n.setQuantidadeComprada(rs.getInt("quantidade_comprada"));
+                n.setPrecoTotal(rs.getBigDecimal("preco_total"));
 
-				LocalDate dataHoraCompra = rs.getDate("data_hora_compra").toLocalDate();
-                c.setDataHoraCompra(dataHoraCompra);
-
-                c.setFormaPagamento(rs.getString("forma_pagamento"));
-				c.setObservacoes(rs.getString("observacoes"));
-
-                cupomFiscals.add(c);
+                notaFiscals.add(n);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -54,10 +52,10 @@ public class CupomFiscalDAO implements  Serializable {
             DbUtil.closePreparedStatement(ps);
             DbUtil.closeConnection(con);
         }
-        return cupomFiscals;
+        return notaFiscals;
     }
 
-    public Boolean insert(CupomFiscal c) {
+    public Boolean insert(NotaFiscal n) {
 		Boolean resultado = false;
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -65,19 +63,14 @@ public class CupomFiscalDAO implements  Serializable {
 		try {
 			con = this.ds.getConnection();
 			try {
-				ps = con.prepareStatement("INSERT INTO cupao_fiscal (id, cpf_funcionario, cnpj_fornecedor, codp_produto, quantidade_adquirida, data_hora_compra, total_compra, forma_pagamento, observacoes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-				ps.setInt(1, c.getId());
-				ps.setString(2, c.getCpfFuncionario());
-				ps.setString(3, c.getCnpjFornecedor());
-				ps.setString(4, c.getCodProduto());
-				ps.setInt(5, c.getQuantidadeAdquirida());
-	
-			
-				ps.setDate(6, java.sql.Date.valueOf(c.getDataHoraCompra()));
-	
-				ps.setDouble(7, c.getTotalCompra());
-				ps.setString(8, c.getFormaPagamento());
-				ps.setString(9, c.getObservacoes());
+				ps = con.prepareStatement("INSERT INTO nota_fiscal (cod_notafiscal, produto_cod_produto, cliente_cpf, data,  funcionario_cpf, quantidade_comprada,preco_total ) VALUES (?, ?, ?, ?, ?, ?, ?)");
+				ps.setString(1, n.getCodNotaFiscal());
+				ps.setString(2, n.getProdutoCodProduto());
+				ps.setString(3, n.getClienteCpf());
+				ps.setDate(4, java.sql.Date.valueOf(n.getDataHoraCompra()));
+				ps.setString(5, n.getFuncionarioCpf());
+                ps.setInt(6, n.getQuantidadeComprada());
+                ps.setBigDecimal(7,n.getPrecoTotal());
 				ps.execute();
 				resultado = true;
 			} catch (SQLException e) {
@@ -92,15 +85,15 @@ public class CupomFiscalDAO implements  Serializable {
 		return resultado;
 	}
 
-    public boolean delete(Fornecedor f) {
+    public boolean delete(NotaFiscal n) {
         Boolean resultado = false;
     	Connection con = null;
     	PreparedStatement ps = null;
     	try {
 	    	con = this.ds.getConnection();
 	    	try {				
-				ps = con.prepareStatement("DELETE FROM fornecedor WHERE cnpj = ?");
-				ps.setString(1, f.getCnpj());
+				ps = con.prepareStatement("DELETE FROM nota_fiscal WHERE cod_notafiscal = ?");
+				ps.setString(1, n.getCodNotaFiscal());
 				ps.execute();
 				resultado = true;
 			} catch (SQLException e) {e.printStackTrace();}

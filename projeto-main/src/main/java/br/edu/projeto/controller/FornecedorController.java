@@ -13,10 +13,8 @@ import javax.inject.Named;
 import org.primefaces.PrimeFaces;
 
 import br.edu.projeto.dao.FornecedorDAO;
-import br.edu.projeto.dao.FuncionarioDAO;
+
 import br.edu.projeto.model.Fornecedor;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 
 @ViewScoped
 @Named

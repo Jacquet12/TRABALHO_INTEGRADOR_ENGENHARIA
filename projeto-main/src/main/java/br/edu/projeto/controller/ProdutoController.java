@@ -1,6 +1,7 @@
 package br.edu.projeto.controller;
 
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -31,7 +32,7 @@ public class ProdutoController implements Serializable {
 
     // Método chamado após a construção da classe
     @PostConstruct
-    public void init() {
+    public void init() throws SQLException {
         novoCadastro();
         this.listaProdutos = produtoDAO.listAll();
     }
@@ -42,7 +43,7 @@ public class ProdutoController implements Serializable {
     }
 
     // Chamado pelo botão remover da tabela
-    public void remover() {
+    public void remover() throws SQLException {
         if (this.produtoDAO.delete(this.produto)) {
             this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
                     "Produto Removido com sucesso!!!", null));

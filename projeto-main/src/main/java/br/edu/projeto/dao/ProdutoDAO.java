@@ -21,11 +21,17 @@ public class ProdutoDAO implements Serializable{
     @Inject
     private DataSource ds;
 
-    public List<Produto> listAll() {
+    public List<Produto> listAll() throws SQLException {
         List<Produto> produtos = new ArrayList<>();
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
+
+        if (ds == null)
+        {
+            throw new SQLException("Can't get data source");
+        }
+
         try {
             con = ds.getConnection();
             ps = con.prepareStatement("SELECT cod_produto, nome, categoria, preco,  descricao, quantidade_estoque,fornecedor_cnpj, funcionario_cpf FROM produto");
@@ -104,7 +110,7 @@ public class ProdutoDAO implements Serializable{
     	Connection con = null;
     	PreparedStatement ps = null;
     	try {
-	    	con = this.ds.getConnection();
+	    	con =ds.getConnection();
 	    	try {				
 				ps = con.prepareStatement("UPDATE produto SET nome =?, categoria = ?, preco =?,  descricao =?, quantidade_estoque = ?,fornecedor_cnpj = ?, funcionario_cpf = ? WHERE cod_produto = ?");
 				ps.setString(1, p.getNome());
@@ -131,7 +137,7 @@ public class ProdutoDAO implements Serializable{
 		Connection con = null;
 		PreparedStatement ps = null;
 		try {
-			con = this.ds.getConnection();
+			con = ds.getConnection();
 			try {
 				ps = con.prepareStatement("UPDATE produto SET quantidade_estoque = ? WHERE cod_produto = ?");
 				ps.setInt(1, quantidadeEstoque);
@@ -157,7 +163,7 @@ public class ProdutoDAO implements Serializable{
         ResultSet rs = null;
 
         try {
-            con = this.ds.getConnection();
+            con = ds.getConnection();
             ps = con.prepareStatement("SELECT * FROM produto WHERE cod_produto = ?");
             ps.setString(1, codProduto);
             rs = ps.executeQuery();
