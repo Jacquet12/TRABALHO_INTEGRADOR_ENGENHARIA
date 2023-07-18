@@ -39,6 +39,7 @@ public class ProdutoDAO implements Serializable{
             while (rs.next()) {
                 Produto p = new Produto();
                 p.setCodProduto(rs.getString("cod_produto"));
+                p.setNome(rs.getString("nome"));
                 p.setCategoria(rs.getString("categoria"));
                 p.setPreco(rs.getBigDecimal("preco"));
                 p.setDescricao(rs.getString("descricao"));

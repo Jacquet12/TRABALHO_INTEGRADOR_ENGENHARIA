@@ -11,7 +11,6 @@ public class Produto {
     private String descricao;
     private String nome;
     private BigDecimal preco;
-
     private String fornecedorCnpj;
 
     public BigDecimal getPreco() {
