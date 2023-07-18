@@ -1,0 +1,117 @@
+-- Tabela Funcionario
+CREATE TABLE Funcionario (
+    cpf VARCHAR(11) PRIMARY KEY,
+    nome VARCHAR(100),
+    sobrenome VARCHAR(100),
+    email VARCHAR(100),
+    senha VARCHAR(100),
+    confirmacaoSenha VARCHAR(100)
+);
+
+-- Tabela Produto
+CREATE TABLE Produto (
+    codigoProduto INT PRIMARY KEY,
+    nome VARCHAR(100),
+    categoria VARCHAR(100),
+    preco FLOAT,
+    descricao VARCHAR(100),
+    qtemestoque INT
+);
+
+-- Tabela Fornecedor
+CREATE TABLE Fornecedor (
+    cnpj VARCHAR(14) PRIMARY KEY,
+    tipoProduto VARCHAR(100),
+    nomeFornecedor VARCHAR(100),
+    contato VARCHAR(100),
+    pais VARCHAR(100)
+);
+
+-- Tabela notaFiscal
+CREATE TABLE notaFiscal (
+    numNF INT PRIMARY KEY,
+    cpf VARCHAR(11),
+    data DATE,
+    codProduto INT,
+    FOREIGN KEY (cpf) REFERENCES Funcionario(cpf),
+    FOREIGN KEY (codProduto) REFERENCES Produto(codigoProduto)
+);
+
+-- Tabela Cliente
+CREATE TABLE Cliente (
+    cpf VARCHAR(11) PRIMARY KEY,
+    email VARCHAR(100),
+    nome VARCHAR(100),
+    sobrenome VARCHAR(100),
+    dataDeNascimento VARCHAR(10),
+    numNF INT,
+    FOREIGN KEY (numNF) REFERENCES notaFiscal(numNF)
+);
+
+-- Tabela cupomFiscal
+CREATE TABLE cupomFiscal (
+    codCP INT PRIMARY KEY,
+    formadepagamento VARCHAR(100),
+    horario TIME,
+    cpf VARCHAR(11),
+    cnpj VARCHAR(14),
+    codigoProduto INT,
+    FOREIGN KEY (cpf) REFERENCES Funcionario(cpf),
+    FOREIGN KEY (cnpj) REFERENCES Fornecedor(cnpj),
+    FOREIGN KEY (codigoProduto) REFERENCES Produto(codigoProduto)
+);
+
+-- Tabela Funcionario
+INSERT INTO Funcionario (cpf, nome, sobrenome, email, senha, confirmacaoSenha)
+VALUES
+    ('12345678901', 'João', 'Silva', 'joao.silva@example.com', 'senha123', 'senha123'),
+    ('98765432109', 'Maria', 'Santos', 'maria.santos@example.com', '12345', '12345'),
+    ('11122233344', 'Pedro', 'Ferreira', 'pedro.ferreira@example.com', 'minhasenha', 'minhasenha'),
+    ('55566677788', 'Carla', 'Rodrigues', 'carla.rodrigues@example.com', '12345678', '12345678'),
+    ('99988877766', 'Ana', 'Oliveira', 'ana.oliveira@example.com', 'senha1234', 'senha1234');
+
+-- Tabela Produto
+INSERT INTO Produto (codigoProduto, nome, categoria, preco, descricao, qtemestoque)
+VALUES
+    (1001, 'Smartphone', 'Eletrônicos', 1299.99, 'Smartphone de última geração', 50),
+    (1002, 'Arroz', 'Alimentos', 10.50, 'Arroz tipo 1', 200),
+    (1003, 'Camiseta', 'Moda', 39.90, 'Camiseta branca, tamanho M', 100),
+    (1004, 'Shampoo', 'Cosméticos', 15.99, 'Shampoo para cabelos normais', 80),
+    (1005, 'Notebook', 'Eletrônicos', 2799.99, 'Notebook com processador i7', 20);
+
+-- Tabela notaFiscal
+INSERT INTO notaFiscal (numNF, cpf, data, codProduto)
+VALUES
+    (1001, '12345678901', '2023-07-15', 1001),
+    (1002, '55566677788', '2023-07-14', 1003),
+    (1003, '11122233344', '2023-07-13', 1002),
+    (1004, '99988877766', '2023-07-12', 1004),
+    (1005, '98765432109', '2023-07-11', 1005);
+
+-- Tabela Cliente
+INSERT INTO Cliente (cpf, email, nome, sobrenome, dataDeNascimento, numNF)
+VALUES
+    ('33311144477', 'cliente1@example.com', 'Carlos', 'Santana', '1990-05-15', 1004),
+    ('88822255566', 'cliente2@example.com', 'Fernanda', 'Alves', '1985-11-28', 1003),
+    ('99977755544', 'cliente3@example.com', 'Ricardo', 'Souza', '1998-03-10', 1002),
+    ('22233344400', 'cliente4@example.com', 'Mariana', 'Silva', '2000-08-05', 1001),
+    ('66677788822', 'cliente5@example.com', 'Lucas', 'Pereira', '1980-12-25', 1005);
+
+-- Tabela Fornecedor
+INSERT INTO Fornecedor (cnpj, tipoProduto, nomeFornecedor, contato, pais)
+VALUES
+    ('12345678901234', 'Eletrônicos', 'TechCorp', 'Fulano de Tal', 'Brasil'),
+    ('98765432109876', 'Alimentos', 'Foods Co.', 'Beltrano de Souza', 'Brasil'),
+    ('11223344556677', 'Moda', 'Fashion Trends', 'Ciclano da Silva', 'Brasil'),
+    ('66778899001122', 'Cosméticos', 'Beauty Inc.', 'Fulana Oliveira', 'Brasil'),
+    ('33344455566677', 'Automóveis', 'AutoParts', 'Sicrano Rodrigues', 'Brasil');
+
+-- Tabela cupomFiscal
+INSERT INTO cupomFiscal (codCP, formadepagamento, horario, cpf, cnpj, codigoProduto)
+VALUES
+    (2001, 'Cartão de Crédito', '14:30:00', '12345678901', '12345678901234', 1001),
+    (2002, 'Dinheiro', '18:15:00', '55566677788', '33344455566677', 1003),
+    (2003, 'Cartão de Débito', '10:00:00', '11122233344', '98765432109876', 1002),
+    (2004, 'Dinheiro', '20:45:00', '99988877766', '66778899001122', 1004),
+    (2005, 'Cartão de Crédito', '12:20:00', '98765432109', '33344455566677', 1005);
+
