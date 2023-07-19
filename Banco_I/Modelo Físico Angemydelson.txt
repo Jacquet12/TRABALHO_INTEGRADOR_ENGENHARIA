@@ -1,6 +1,4 @@
--- -- Criação do banco de dados
--- CREATE DATABASE IF NOT EXISTS SistemadeVenda;
--- USE SistemadeVenda;
+
 
 -- Sistema de venda 
 
