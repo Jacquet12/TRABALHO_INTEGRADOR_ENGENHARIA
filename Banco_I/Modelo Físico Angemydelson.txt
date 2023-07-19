@@ -1,14 +1,16 @@
+
+
 -- Sistema de venda 
 
--- CREATE DATABASE SistemadeVenda;
--- -- Excluir tabelas se existirem
--- DROP TABLE IF EXISTS cupomFiscal;
--- DROP TABLE IF EXISTS notaFiscal;
--- DROP TABLE IF EXISTS Produto;
--- DROP TABLE IF EXISTS Fornecedor;
--- DROP TABLE IF EXISTS Cliente;
--- DROP TABLE IF EXISTS Funcionario;
+-- Excluir tabelas se existirem
+DROP TABLE IF EXISTS cupomFiscal;
+DROP TABLE IF EXISTS notaFiscal;
+DROP TABLE IF EXISTS Produto;
+DROP TABLE IF EXISTS Fornecedor;
+DROP TABLE IF EXISTS Cliente;
+DROP TABLE IF EXISTS Funcionario;
 
+-- Criação das tabelas
 -- Tabela Funcionario
 CREATE TABLE Funcionario (
     cpf VARCHAR(11) PRIMARY KEY,
@@ -79,7 +81,12 @@ VALUES
     ('98765432109', 'Maria', 'Santos', 'maria.santos@example.com', '12345', '12345'),
     ('11122233344', 'Pedro', 'Ferreira', 'pedro.ferreira@example.com', 'minhasenha', 'minhasenha'),
     ('55566677788', 'Carla', 'Rodrigues', 'carla.rodrigues@example.com', '12345678', '12345678'),
-    ('99988877766', 'Ana', 'Oliveira', 'ana.oliveira@example.com', 'senha1234', 'senha1234');
+    ('99988877766', 'Ana', 'Oliveira', 'ana.oliveira@example.com', 'senha1234', 'senha1234'),
+    ('22233344455', 'Luciana', 'Gomes', 'luciana.gomes@example.com', 'minhasenha555', 'minhasenha555'),
+    ('66677788899', 'Paulo', 'Santana', 'paulo.santana@example.com', 'senha456', 'senha456'),
+    ('88899966611', 'Bruna', 'Silveira', 'bruna.silveira@example.com', 'minhasenhacod', 'minhasenhacod'),
+    ('44455566677', 'Ricardo', 'Fernandes', 'ricardo.fernandes@example.com', 'senha789', 'senha789'),
+    ('11133344455', 'Mariana', 'Oliveira', 'mariana.oliveira@example.com', 'minhasenha999', 'minhasenha999');
 
 -- Tabela Produto
 INSERT INTO Produto (codigoProduto, nome, categoria, preco, descricao, qtemestoque)
@@ -88,7 +95,12 @@ VALUES
     (1002, 'Arroz', 'Alimentos', 10.50, 'Arroz tipo 1', 200),
     (1003, 'Camiseta', 'Moda', 39.90, 'Camiseta branca, tamanho M', 100),
     (1004, 'Shampoo', 'Cosméticos', 15.99, 'Shampoo para cabelos normais', 80),
-    (1005, 'Notebook', 'Eletrônicos', 2799.99, 'Notebook com processador i7', 20);
+    (1005, 'Notebook', 'Eletrônicos', 2799.99, 'Notebook com processador i7', 20),
+    (1006, 'Mouse', 'Informática', 29.90, 'Mouse sem fio', 50),
+    (1007, 'Teclado', 'Informática', 49.90, 'Teclado USB', 30),
+    (1008, 'Fone de Ouvido', 'Eletrônicos', 79.90, 'Fone de ouvido com isolamento de ruído', 20),
+    (1009, 'Livro', 'Livros', 39.90, 'Título: "Aventuras de ChatGPT"', 100),
+    (1010, 'Mochila', 'Acessórios', 89.90, 'Mochila resistente com compartimento para laptop', 15);
 
 -- Tabela notaFiscal
 INSERT INTO notaFiscal (numNF, cpf, data, codProduto)
@@ -97,7 +109,17 @@ VALUES
     (1002, '55566677788', '2023-07-14', 1003),
     (1003, '11122233344', '2023-07-13', 1002),
     (1004, '99988877766', '2023-07-12', 1004),
-    (1005, '98765432109', '2023-07-11', 1005);
+    (1005, '98765432109', '2023-07-11', 1005),
+    (1006, '22233344455', '2023-07-10', 1006),
+    (1007, '66677788899', '2023-07-09', 1007),
+    (1008, '88899966611', '2023-07-08', 1008),
+    (1009, '44455566677', '2023-07-07', 1009),
+    (1010, '11133344455', '2023-07-06', 1010),
+    (1011, '12345678901', '2023-07-05', 1001),
+    (1012, '55566677788', '2023-07-04', 1003),
+    (1013, '11122233344', '2023-07-03', 1002),
+    (1014, '99988877766', '2023-07-02', 1004),
+    (1015, '98765432109', '2023-07-01', 1005);
 
 -- Tabela Cliente
 INSERT INTO Cliente (cpf, email, nome, sobrenome, dataDeNascimento, numNF)
@@ -106,7 +128,13 @@ VALUES
     ('88822255566', 'cliente2@example.com', 'Fernanda', 'Alves', '1985-11-28', 1003),
     ('99977755544', 'cliente3@example.com', 'Ricardo', 'Souza', '1998-03-10', 1002),
     ('22233344400', 'cliente4@example.com', 'Mariana', 'Silva', '2000-08-05', 1001),
-    ('66677788822', 'cliente5@example.com', 'Lucas', 'Pereira', '1980-12-25', 1005);
+    ('66677788822', 'cliente5@example.com', 'Lucas', 'Pereira', '1980-12-25', 1005),
+    ('33322244411', 'cliente6@example.com', 'Laura', 'Fernandes', '1987-09-21', 1003),
+    ('11122233344', 'cliente7@example.com', 'Amanda', 'Oliveira', '1995-07-30', 1002),
+    ('77788899911', 'cliente8@example.com', 'Marcelo', 'Rocha', '1982-04-14', 1001),
+    ('88899977766', 'cliente9@example.com', 'Isabela', 'Santos', '1999-01-03', 1005),
+    ('11155566688', 'cliente10@example.com', 'Rafael', 'Mendes', '1992-11-12', 1004);
+
 
 -- Tabela Fornecedor
 INSERT INTO Fornecedor (cnpj, tipoProduto, nomeFornecedor, contato, pais)
@@ -115,7 +143,12 @@ VALUES
     ('98765432109876', 'Alimentos', 'Foods Co.', 'Beltrano de Souza', 'Brasil'),
     ('11223344556677', 'Moda', 'Fashion Trends', 'Ciclano da Silva', 'Brasil'),
     ('66778899001122', 'Cosméticos', 'Beauty Inc.', 'Fulana Oliveira', 'Brasil'),
-    ('33344455566677', 'Automóveis', 'AutoParts', 'Sicrano Rodrigues', 'Brasil');
+    ('33344455566677', 'Automóveis', 'AutoParts', 'Sicrano Rodrigues', 'Brasil'),
+    ('11122233344455', 'Móveis', 'Furniture House', 'João dos Santos', 'Brasil'),
+    ('44455566677788', 'Jogos', 'Game World', 'Maria Aparecida', 'Brasil'),
+    ('77788899900011', 'Esportes', 'SportsGear', 'Carlos Pereira', 'Brasil'),
+    ('88899900011122', 'Beleza', 'Beauty Shop', 'Ana Silva', 'Brasil'),
+    ('99900011122233', 'Brinquedos', 'Toys Universe', 'Pedro Ferreira', 'Brasil');
 
 -- Tabela cupomFiscal
 INSERT INTO cupomFiscal (codCP, formadepagamento, horario, cpf, cnpj, codigoProduto)
@@ -124,5 +157,16 @@ VALUES
     (2002, 'Dinheiro', '18:15:00', '55566677788', '33344455566677', 1003),
     (2003, 'Cartão de Débito', '10:00:00', '11122233344', '98765432109876', 1002),
     (2004, 'Dinheiro', '20:45:00', '99988877766', '66778899001122', 1004),
-    (2005, 'Cartão de Crédito', '12:20:00', '98765432109', '33344455566677', 1005);
+    (2005, 'Cartão de Crédito', '12:20:00', '98765432109', '33344455566677', 1005),
+    (2006, 'Dinheiro', '09:30:00', '22233344455', '11223344556677', 1006),
+    (2007, 'Cartão de Crédito', '14:00:00', '66677788899', '44455566677788', 1007),
+    (2008, 'Dinheiro', '16:30:00', '88899966611', '77788899900011', 1008),
+    (2009, 'Cartão de Débito', '11:45:00', '44455566677', '88899900011122', 1009),
+    (2010, 'Dinheiro', '19:10:00', '11133344455', '99900011122233', 1010),
+    (2011, 'Cartão de Crédito', '10:50:00', '12345678901', '12345678901234', 1001),
+    (2012, 'Dinheiro', '16:20:00', '55566677788', '33344455566677', 1003),
+    (2013, 'Cartão de Débito', '12:15:00', '11122233344', '98765432109876', 1002),
+    (2014, 'Dinheiro', '20:30:00', '99988877766', '66778899001122', 1004),
+    (2015, 'Cartão de Crédito', '11:00:00', '98765432109', '33344455566677', 1005);
+
 
