@@ -2,6 +2,7 @@ package br.edu.projeto.controller;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.time.LocalDateTime;
@@ -42,13 +43,13 @@ public class NotaFiscalController implements Serializable {
         listaNotaFiscals = notafiscalDAO.listAll();
     }
 
-    public void venderProduto(){
+    public void venderProduto() throws SQLException{
         realizarVenda(notaFiscal.getDataHoraCompra(), notaFiscal.getFuncionarioCpf(), notaFiscal.getClienteCpf(), notaFiscal.getProdutoCodProduto(), notaFiscal.getQuantidadeComprada());
     }
 
 
     public void realizarVenda(LocalDate dataHoraCompra,String funcionarioCpf, String clienteCpf,
-                           String produtoCodProduto,int quantidadeComprada) {
+                           String produtoCodProduto,int quantidadeComprada) throws SQLException {
 
         // Verifica se o produto existe na tabela "produto"
         Produto produto = produtoDAO.buscarPorCodigo(produtoCodProduto);

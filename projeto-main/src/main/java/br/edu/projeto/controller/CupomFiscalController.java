@@ -2,6 +2,7 @@ package br.edu.projeto.controller;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.time.LocalDateTime;
@@ -39,12 +40,12 @@ public class CupomFiscalController implements Serializable {
         listaCupomFiscals = cupomFiscalDAO.listAll();
     }
 
-    public void comprarProduto() {
+    public void comprarProduto() throws SQLException {
         realizarCompra(cupomFiscal.getCpfFuncionario(), cupomFiscal.getCnpjFornecedor(), cupomFiscal.getCodProduto(), cupomFiscal.getQuantidadeAdquirida(), cupomFiscal.getFormaPagamento(), cupomFiscal.getObservacoes(), cupomFiscal.getDataHoraCompra());
     }
 
     public void realizarCompra(String cpfFuncionario, String cnpjFornecedor, String codProduto, int quantidadeAdquirida,
-                           String formaPagamento, String observacoes, LocalDate dataHoraCompra) {
+                           String formaPagamento, String observacoes, LocalDate dataHoraCompra) throws SQLException {
 
         // Verifica se o produto existe na tabela "produto"
         Produto produto = produtoDAO.buscarPorCodigo(codProduto);

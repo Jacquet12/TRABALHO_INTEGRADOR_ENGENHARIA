@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Delete Produto por id</title>
+</h:head>
+<body>
+    <h:form>
+        <h:panelGrid columns="2" styleClass="search-form">
+            <h:outputLabel for="searchInput" value="Digite o código do Produto:" />
+            <h:inputText id="searchInput" value="#{produtoController.codigoProdutoParaExclusao}" />
+            <p:commandButton value="Delete" action="#{produtoController.remover}" />
+        </h:panelGrid>
+        <!-- Botão "Voltar" -->
+        <p:button value="Voltar" outcome="DashboardAdm.xhtml" />
+    </h:form>
+</body>
+</html>

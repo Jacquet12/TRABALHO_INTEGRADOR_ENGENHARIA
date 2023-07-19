@@ -13,7 +13,10 @@ import javax.inject.Named;
 
 import org.primefaces.PrimeFaces;
 
+import br.edu.projeto.dao.CupomFiscalDAO;
+import br.edu.projeto.dao.NotafiscalDAO;
 import br.edu.projeto.dao.ProdutoDAO;
+import br.edu.projeto.model.NotaFiscal;
 import br.edu.projeto.model.Produto;
 
 @ViewScoped
@@ -27,34 +30,34 @@ public class ProdutoController implements Serializable {
     @Inject
     private ProdutoDAO produtoDAO;
 
+    @Inject
+    private NotafiscalDAO notafiscalDAO; // Add this injection
+
+    @Inject
     private Produto produto;
     private List<Produto> listaProdutos;
+    private String codigoProdutoParaExclusao;
+
+ 
 
     // Método chamado após a construção da classe
     @PostConstruct
-    public void init() throws SQLException {
+    public void init() {
         novoCadastro();
-        this.listaProdutos = produtoDAO.listAll();
+        try {
+            this.listaProdutos = produtoDAO.listAll();
+        } catch (SQLException e) {
+            // Handle the exception (e.g., log it)
+            e.printStackTrace();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro ao carregar a lista de produtos.", null));
+        }
     }
-
+    
     // Chamado pelo botão novo
     public void novoCadastro() {
         this.produto = new Produto();
     }
 
-    // Chamado pelo botão remover da tabela
-    public void remover() throws SQLException {
-        if (this.produtoDAO.delete(this.produto)) {
-            this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
-                    "Produto Removido com sucesso!!!", null));
-            this.listaProdutos.remove(this.produto);
-        } else
-            this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                    "Falha ao Remover Produto", null));
-        this.listaProdutos = produtoDAO.listAll();
-        this.produto = null;
-        PrimeFaces.current().ajax().update("form:messages", "form:dt-produto");
-    }
 
     public void salvarAlteracao() {
         if (this.produtoDAO.update(this.produto)) {
@@ -81,7 +84,59 @@ public class ProdutoController implements Serializable {
         }
     }
 
-    // Getters e setters
+    
+
+    public void remover() throws SQLException {
+        String codigoProduto = this.codigoProdutoParaExclusao;
+        Produto produtoParaExcluir = produtoDAO.buscarPorCodigo(codigoProduto);
+
+        if (produtoParaExcluir == null) {
+            // Produto não encontrado com o código informado
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "Produto não encontrado com o código informado.", null));
+        } else {
+            try {
+                if (this.produtoDAO.delete(produtoParaExcluir)) {
+                    this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                            "Produto Removido com sucesso!!!", null));
+                    this.listaProdutos.remove(produtoParaExcluir);
+                } else {
+                    this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                            "Falha ao Remover Produto, talvez esteja em uso!", null));
+                }
+            } catch (Exception e) {
+                // Captura a mensagem de erro da exceção
+                errorMessage = e.getMessage();
+            }
+        }
+
+        PrimeFaces.current().ajax().update("form:messages", "form:dt-produto", "form:error");
+    }
+
+  
+
+    private String errorMessage;
+
+    // Getter e Setter da mensagem de erro
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
+
+    public String getCodigoProdutoParaExclusao() {
+        return codigoProdutoParaExclusao;
+    }
+
+    public void setCodigoProdutoParaExclusao(String codigoProdutoParaExclusao) {
+        this.codigoProdutoParaExclusao = codigoProdutoParaExclusao;
+    }
+
+
+       // Getters e setters
     public Produto getProduto() {
         return produto;
     }
@@ -105,4 +160,17 @@ public class ProdutoController implements Serializable {
     public void setProdutoDAO(ProdutoDAO produtoDAO) {
         this.produtoDAO = produtoDAO;
     }
+
+    public NotafiscalDAO getNotafiscalDAO() {
+        return notafiscalDAO;
+    }
+
+    public void setNotafiscalDAO(NotafiscalDAO notafiscalDAO) {
+        this.notafiscalDAO = notafiscalDAO;
+    }
+
+   
+
+
 }
+

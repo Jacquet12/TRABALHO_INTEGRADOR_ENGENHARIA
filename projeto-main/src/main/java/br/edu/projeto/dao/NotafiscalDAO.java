@@ -12,7 +12,7 @@ import javax.inject.Inject;
 import javax.sql.DataSource;
 
 import br.edu.projeto.model.NotaFiscal;
-import br.edu.projeto.model.CupomFiscal;
+
 import br.edu.projeto.model.Fornecedor;
 
 import br.edu.projeto.util.DbUtil;
@@ -129,6 +129,32 @@ public class NotafiscalDAO implements  Serializable {
 			DbUtil.closeConnection(con);
 		}
     	return resultado;
+    }
+
+
+	public boolean deleteByProductCode(String codProduto) {
+        Boolean resultado = false;
+        Connection con = null;
+        PreparedStatement ps = null;
+
+        try {
+            con = this.ds.getConnection();
+            try {
+                ps = con.prepareStatement("DELETE FROM cupao_fiscal WHERE codp_produto = ?");
+                ps.setString(1, codProduto);
+                ps.execute();
+                resultado = true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbUtil.closePreparedStatement(ps);
+            DbUtil.closeConnection(con);
+        }
+
+        return resultado;
     }
 }
 

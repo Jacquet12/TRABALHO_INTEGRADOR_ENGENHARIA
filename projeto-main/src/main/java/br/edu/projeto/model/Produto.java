@@ -2,7 +2,11 @@ package br.edu.projeto.model;
 
 import java.math.BigDecimal;
 
-public class Produto {
+import java.io.Serializable;
+
+public class Produto implements Serializable {
+    private static final long serialVersionUID = 1L;
+
 
     private int quantidadeEstoque = 0;
     private String funcionarioCpf;

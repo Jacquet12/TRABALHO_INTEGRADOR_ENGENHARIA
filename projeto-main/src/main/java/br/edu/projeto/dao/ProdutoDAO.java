@@ -1,4 +1,5 @@
 package br.edu.projeto.dao;
+
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,16 +11,23 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.sql.DataSource;
 
-import br.edu.projeto.model.Cliente;
+import br.edu.projeto.model.NotaFiscal;
 import br.edu.projeto.model.Produto;
-
 import br.edu.projeto.util.DbUtil;
 
-public class ProdutoDAO implements Serializable{
+public class ProdutoDAO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Inject
     private DataSource ds;
+
+    public DataSource getDs() {
+        return ds;
+    }
+
+    public void setDs(DataSource ds) {
+        this.ds = ds;
+    }
 
     public List<Produto> listAll() throws SQLException {
         List<Produto> produtos = new ArrayList<>();
@@ -27,14 +35,13 @@ public class ProdutoDAO implements Serializable{
         PreparedStatement ps = null;
         ResultSet rs = null;
 
-        if (ds == null)
-        {
+        if (ds == null) {
             throw new SQLException("Can't get data source");
         }
 
         try {
             con = ds.getConnection();
-            ps = con.prepareStatement("SELECT cod_produto, nome, categoria, preco,  descricao, quantidade_estoque,fornecedor_cnpj, funcionario_cpf FROM produto");
+            ps = con.prepareStatement("SELECT cod_produto, nome, categoria, preco, descricao, quantidade_estoque, fornecedor_cnpj, funcionario_cpf FROM produto");
             rs = ps.executeQuery();
             while (rs.next()) {
                 Produto p = new Produto();
@@ -60,30 +67,33 @@ public class ProdutoDAO implements Serializable{
     }
 
     public Boolean insert(Produto p) {
-    	Boolean resultado = false;
-    	Connection con = null;
-    	PreparedStatement ps = null;
-    	try {
-	    	con = this.ds.getConnection();
-	    	try {				
-				ps = con.prepareStatement("INSERT INTO produto (cod_produto, nome, categoria, preco,  descricao, quantidade_estoque,fornecedor_cnpj, funcionario_cpf ) VALUES (?,?,?,?,?,?,?,?)");
-				ps.setString(1, p.getCodProduto());
-				ps.setString(2, p.getNome());
+        Boolean resultado = false;
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = this.ds.getConnection();
+            try {
+                ps = con.prepareStatement("INSERT INTO produto (cod_produto, nome, categoria, preco, descricao, quantidade_estoque, fornecedor_cnpj, funcionario_cpf) VALUES (?,?,?,?,?,?,?,?)");
+                ps.setString(1, p.getCodProduto());
+                ps.setString(2, p.getNome());
                 ps.setString(3, p.getCategoria());
                 ps.setBigDecimal(4, p.getPreco());
                 ps.setString(5, p.getDescricao());
                 ps.setInt(6, p.getQuantidadeEstoque());
                 ps.setString(7, p.getFornecedorCnpj());
                 ps.setString(8, p.getFuncionarioCpf());
-				ps.execute();
-				resultado = true;
-			} catch (SQLException e) {e.printStackTrace();}
-    	} catch (SQLException e) {e.printStackTrace();
-    	} finally {
-			DbUtil.closePreparedStatement(ps);
-			DbUtil.closeConnection(con);
-		}
-    	return resultado;
+                ps.execute();
+                resultado = true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbUtil.closePreparedStatement(ps);
+            DbUtil.closeConnection(con);
+        }
+        return resultado;
     }
 
     public boolean delete(Produto p) {
@@ -108,56 +118,59 @@ public class ProdutoDAO implements Serializable{
 
     public boolean update(Produto p) {
         Boolean resultado = false;
-    	Connection con = null;
-    	PreparedStatement ps = null;
-    	try {
-	    	con =ds.getConnection();
-	    	try {				
-				ps = con.prepareStatement("UPDATE produto SET nome =?, categoria = ?, preco =?,  descricao =?, quantidade_estoque = ?,fornecedor_cnpj = ?, funcionario_cpf = ? WHERE cod_produto = ?");
-				ps.setString(1, p.getNome());
-				ps.setString(2, p.getCategoria());
-				ps.setBigDecimal(3, p.getPreco());
-				ps.setString(4, p.getDescricao());
-				ps.setInt(5, p.getQuantidadeEstoque());
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = ds.getConnection();
+            try {
+                ps = con.prepareStatement("UPDATE produto SET nome =?, categoria = ?, preco =?, descricao =?, quantidade_estoque = ?, fornecedor_cnpj = ?, funcionario_cpf = ? WHERE cod_produto = ?");
+                ps.setString(1, p.getNome());
+                ps.setString(2, p.getCategoria());
+                ps.setBigDecimal(3, p.getPreco());
+                ps.setString(4, p.getDescricao());
+                ps.setInt(5, p.getQuantidadeEstoque());
                 ps.setString(6, p.getFornecedorCnpj());
-				ps.setString(7, p.getFuncionarioCpf());
+                ps.setString(7, p.getFuncionarioCpf());
                 ps.setString(8, p.getCodProduto());
-				ps.execute();	
-				resultado = true;
-			} catch (SQLException e) {e.printStackTrace();}
-    	} catch (SQLException e) {e.printStackTrace();
-    	} finally {
-			DbUtil.closePreparedStatement(ps);
-			DbUtil.closeConnection(con);
-		}
-    	return resultado;
+                ps.execute();
+                resultado = true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbUtil.closePreparedStatement(ps);
+            DbUtil.closeConnection(con);
+        }
+        return resultado;
     }
 
-	public boolean atualizarQuantidadeEstoque(String codProduto, int quantidadeEstoque) {
-		Boolean resultado = false;
-		Connection con = null;
-		PreparedStatement ps = null;
-		try {
-			con = ds.getConnection();
-			try {
-				ps = con.prepareStatement("UPDATE produto SET quantidade_estoque = ? WHERE cod_produto = ?");
-				ps.setInt(1, quantidadeEstoque);
-				ps.setString(2, codProduto);
-				ps.execute();
-				resultado = true;
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DbUtil.closePreparedStatement(ps);
-			DbUtil.closeConnection(con);
-		}
-		return resultado;
-	}
+    public boolean atualizarQuantidadeEstoque(String codProduto, int quantidadeEstoque) {
+        Boolean resultado = false;
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = ds.getConnection();
+            try {
+                ps = con.prepareStatement("UPDATE produto SET quantidade_estoque = ? WHERE cod_produto = ?");
+                ps.setInt(1, quantidadeEstoque);
+                ps.setString(2, codProduto);
+                ps.execute();
+                resultado = true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbUtil.closePreparedStatement(ps);
+            DbUtil.closeConnection(con);
+        }
+        return resultado;
+    }
 
-	public Produto buscarPorCodigo(String codProduto) {
+    public Produto buscarPorCodigo(String codProduto) throws SQLException {
         Produto produto = null;
         Connection con = null;
         PreparedStatement ps = null;
@@ -182,7 +195,7 @@ public class ProdutoDAO implements Serializable{
                 produto.setFuncionarioCpf(rs.getString("funcionario_cpf"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new SQLException("Erro ao buscar produto por código: " + e.getMessage(), e);
         } finally {
             DbUtil.closeResultSet(rs);
             DbUtil.closePreparedStatement(ps);
@@ -191,7 +204,5 @@ public class ProdutoDAO implements Serializable{
 
         return produto;
     }
-
-}
-
-
+    
+}    
