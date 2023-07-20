@@ -17,5 +17,18 @@
         <!-- Botão "Voltar" -->
         <p:button value="Voltar" outcome="DashboardAdm.xhtml" />
     </h:form>
+
+    <h:form>
+        <h:panelGrid columns="2" styleClass="search-form">
+            <h:outputLabel for="searchInput" value="Digite o cpf do Cliente:" />
+            <h:inputText id="searchInput" value="#{clienteController.cpfClienteParaExclusao}" />
+            <p:commandButton value="Delete" action="#{clienteController.remover}" update="messages" />
+        </h:panelGrid>
+        <!-- Botão "Voltar" -->
+        <p:button value="Voltar" outcome="DashboardAdm.xhtml" />
+    </h:form>
+    
+    <p:messages id="messages" showDetail="true" autoUpdate="true" />
+    
 </body>
 </html>

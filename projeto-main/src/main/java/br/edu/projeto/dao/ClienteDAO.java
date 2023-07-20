@@ -91,7 +91,45 @@ public class ClienteDAO implements Serializable {
 		}
 		return resultado;
 	}
-	
+
+    public Cliente buscarPorCPF(String cpf) {
+        Cliente cliente = null;
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            con = this.ds.getConnection();
+            try {
+                ps = con.prepareStatement("SELECT * FROM cliente WHERE cpf = ?");
+                ps.setString(1, cpf);
+                rs = ps.executeQuery();
+
+                if (rs.next()) {
+                    cliente = new Cliente();
+                    cliente.setCpf(rs.getString("cpf"));
+                    cliente.setNome(rs.getString("nome"));
+                    cliente.setSobrenome(rs.getString("sobrenome"));
+                    LocalDate dataNascimento = rs.getDate("data_nascimento").toLocalDate();
+                    cliente.setData_nascimento(dataNascimento);
+
+                    cliente.setEmail(rs.getString("email"));
+                    cliente.setFuncionario_cpf(rs.getString("funcionario_cpf"));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Fechar recursos
+            DbUtil.closeResultSet(rs);
+            DbUtil.closePreparedStatement(ps);
+            DbUtil.closeConnection(con);
+        }
+
+        return cliente;
+    }
 
     public boolean delete(Cliente c) {
         Boolean resultado = false;

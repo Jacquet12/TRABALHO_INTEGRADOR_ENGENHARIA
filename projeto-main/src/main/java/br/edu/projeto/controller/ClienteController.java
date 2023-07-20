@@ -1,6 +1,7 @@
 package br.edu.projeto.controller;
 
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -14,6 +15,7 @@ import org.primefaces.PrimeFaces;
 
 import br.edu.projeto.dao.ClienteDAO;
 import br.edu.projeto.model.Cliente;
+import br.edu.projeto.model.Produto;
 
 @ViewScoped
 @Named
@@ -28,6 +30,15 @@ public class ClienteController implements Serializable {
 
     private Cliente cliente;
     private List<Cliente> listaClientes;
+    public String getCpfClienteParaExclusao() {
+        return cpfClienteParaExclusao;
+    }
+
+    public void setCpfClienteParaExclusao(String cpfClienteParaExclusao) {
+        this.cpfClienteParaExclusao = cpfClienteParaExclusao;
+    }
+
+    private String cpfClienteParaExclusao;
 
     @PostConstruct
     public void init() {
@@ -39,16 +50,45 @@ public class ClienteController implements Serializable {
         this.cliente = new Cliente();
     }
 
-    public void remover() {
-        if (this.clienteDAO.delete(this.cliente)) {
-            this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cliente Removido com sucesso!!!", null));
-            this.listaClientes.remove(this.cliente);
-        } else {
-            this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Falha ao Remover cliente", null));
-        }
-        this.cliente = null;
-        PrimeFaces.current().ajax().update("form:messages", "form:dt-cliente");
+    private String errorMessage;
+
+    // Getter e Setter da mensagem de erro
+    public String getErrorMessage() {
+        return errorMessage;
     }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
+    public void remover() throws SQLException {
+        String cpfCliente = this.cpfClienteParaExclusao;
+        Cliente clienteParaExcluir = clienteDAO.buscarPorCPF(cpfCliente);
+
+        if (clienteParaExcluir == null) {
+            // Produto não encontrado com o código informado
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "Cliente não encontrado com o cpf informado.", null));
+        } else {
+            try {
+                if (this.clienteDAO.delete(clienteParaExcluir)) {
+                    this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                            "Cliente Removido com sucesso!!!", null));
+                    this.listaClientes.remove(clienteParaExcluir);
+                } else {
+                    this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                            "Falha ao Remover Cliente!", null));
+                }
+            } catch (Exception e) {
+                // Captura a mensagem de erro da exceção
+                errorMessage = e.getMessage();
+            }
+        }
+
+        PrimeFaces.current().ajax().update("form:messages", "form:dt-cliente", "form:error");
+
+    }
+
 
     public void salvarAlteracao() {
         if (this.clienteDAO.update(this.cliente)) {

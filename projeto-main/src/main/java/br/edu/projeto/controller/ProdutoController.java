@@ -58,16 +58,34 @@ public class ProdutoController implements Serializable {
         this.produto = new Produto();
     }
 
+    public void update() throws SQLException{
+        salvarAlteracao(codigoProdutoParaExclusao);
+    }
 
-    public void salvarAlteracao() {
-        if (this.produtoDAO.update(this.produto)) {
-            PrimeFaces.current().executeScript("PF('fornecedorDialog').hide()");
-            PrimeFaces.current().ajax().update("form:dt-produto");
-            this.facesContext.addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_INFO, "produto Atualizado com sucesso", null));
+
+    public void salvarAlteracao(String codigoProduto) throws SQLException {
+        // Buscar o produto pelo código no banco de dados
+        Produto produtoParaAtualizar = produtoDAO.buscarPorCodigo(produto.getCodProduto());
+
+        if (produtoParaAtualizar != null) {
+            // Aplicar as alterações ao produto buscado
+            produtoParaAtualizar.setNome(this.produto.getNome());
+            produtoParaAtualizar.setPreco(this.produto.getPreco());
+            produtoParaAtualizar.setDescricao(this.produto.getDescricao());
+
+            // Chamar o método de atualização no DAO
+            if (produtoDAO.update(produtoParaAtualizar)) {
+                PrimeFaces.current().executeScript("PF('fornecedorDialog').hide()");
+                PrimeFaces.current().ajax().update("form:dt-produto");
+                this.facesContext.addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, "Produto Atualizado com sucesso", null));
+            } else {
+                this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                        "Falha ao Atualizar Produto", null));
+            }
         } else {
             this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                    "Falha ao Atualizar Produto", null));
+                    "Produto não encontrado com o código informado.", null));
         }
     }
 
