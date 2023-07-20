@@ -122,4 +122,36 @@ public class FornecedorDAO implements  Serializable {
 		}
     	return resultado;
     }
+
+    public Fornecedor buscarPorCNPJ(String cnpjFornecedor) {
+        Fornecedor fornecedor = null;
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        try {
+            con = ds.getConnection();
+            ps = con.prepareStatement("SELECT * FROM fornecedor WHERE cnpj = ?");
+            ps.setString(1, cnpjFornecedor);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                fornecedor = new Fornecedor();
+                fornecedor.setCnpj(rs.getString("cnpj"));
+                fornecedor.setNomeFornecedor(rs.getString("nome_fornecedor"));
+                fornecedor.setTipoDeFornecedor(rs.getString("tipo_de_fornecedor"));
+                fornecedor.setContato(rs.getString("contato"));
+                fornecedor.setPais(rs.getString("pais"));
+                fornecedor.setTipoDeProduto(rs.getString("tipo_de_produto"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbUtil.closeResultSet(rs);
+            DbUtil.closePreparedStatement(ps);
+            DbUtil.closeConnection(con);
+        }
+
+        return fornecedor;
+    }
 }

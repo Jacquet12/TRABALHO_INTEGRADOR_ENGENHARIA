@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
-import java.time.LocalDateTime;
+
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -15,7 +15,6 @@ import javax.inject.Named;
 
 import br.edu.projeto.dao.ProdutoDAO;
 import br.edu.projeto.dao.NotafiscalDAO;
-import br.edu.projeto.model.CupomFiscal;
 import br.edu.projeto.model.NotaFiscal;
 import br.edu.projeto.model.Produto;
 
@@ -28,70 +27,95 @@ public class NotaFiscalController implements Serializable {
     private FacesContext facesContext;
 
     @Inject
-    private ProdutoDAO produtoDAO; // Injeção de dependência para ProdutoDAO
+    private ProdutoDAO produtoDAO;
 
     @Inject
-    private NotafiscalDAO notafiscalDAO; // Injeção de dependência para CupomFiscalDAO
+    private NotafiscalDAO notafiscalDAO;
 
-    private List<NotaFiscal> listaNotaFiscals;
-   
+    private List<NotaFiscal> listaNotaFiscais;
 
     private NotaFiscal notaFiscal = new NotaFiscal();
 
     @PostConstruct
     public void init() {
-        listaNotaFiscals = notafiscalDAO.listAll();
+        listaNotaFiscais = notafiscalDAO.listAll();
     }
 
-    public void venderProduto() throws SQLException{
-        realizarVenda(notaFiscal.getDataHoraCompra(), notaFiscal.getFuncionarioCpf(), notaFiscal.getClienteCpf(), notaFiscal.getProdutoCodProduto(), notaFiscal.getQuantidadeComprada());
+    public void venderProduto() {
+        try {
+            realizarVenda(notaFiscal.getCodNotaFiscal(), notaFiscal.getDataHoraCompra(), notaFiscal.getFuncionarioCpf(), 
+                          notaFiscal.getClienteCpf(), notaFiscal.getProdutoCodProduto(), 
+                          notaFiscal.getQuantidadeComprada());
+        } catch (SQLException e) {
+            FacesContext.getCurrentInstance().addMessage(null, 
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro ao realizar a venda.", null));
+            e.printStackTrace();
+        }
     }
 
+    private void realizarVenda(String codNotaFiscal, LocalDate dataHoraCompra, String funcionarioCpf, 
+                String clienteCpf, String produtoCodProduto, int quantidadeComprada) throws SQLException {
+            Produto produto = produtoDAO.buscarPorCodigo(produtoCodProduto);
 
-    public void realizarVenda(LocalDate dataHoraCompra,String funcionarioCpf, String clienteCpf,
-                           String produtoCodProduto,int quantidadeComprada) throws SQLException {
+            if (produto != null) {
+            // Check if the nota fiscal code provided by the user already exists
+            if (notafiscalDAO.buscarNotaFiscalPorCodigo(codNotaFiscal) != null) {
+                FacesContext.getCurrentInstance().addMessage(null, 
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Venda não pode ser realizada. Código de Nota Fiscal já existe.", null));
+                return;
+            }
 
-        // Verifica se o produto existe na tabela "produto"
-        Produto produto = produtoDAO.buscarPorCodigo(produtoCodProduto);
+            // Check if the product has sufficient stock
+            if (produto.getQuantidadeEstoque() < quantidadeComprada) {
+                FacesContext.getCurrentInstance().addMessage(null, 
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Estoque insuficiente para realizar a venda.", null));
+                return;
+            }
 
-        if (produto != null) {
-            // Calcula o total de compra multiplicando o preço do produto pela quantidade adquirida
-            BigDecimal precoProduto = produto.getPreco();
-            BigDecimal quantidadeBigDecimal = BigDecimal.valueOf(quantidadeComprada);
-            BigDecimal totalCompra = precoProduto.multiply(quantidadeBigDecimal);
-
-            // Abastece a quantidade de produto em estoque
-            int novaQuantidadeEstoque = produto.getQuantidadeEstoque() - quantidadeComprada;
-            produto.setQuantidadeEstoque(novaQuantidadeEstoque);
-            produtoDAO.atualizarQuantidadeEstoque(produtoCodProduto, novaQuantidadeEstoque);
-
-            // Atribui os valores calculados ao objeto cupomFiscal antes de inserir no banco
+            // Create a new NotaFiscal object for the current transaction
+            NotaFiscal notaFiscal = new NotaFiscal();
+            notaFiscal.setCodNotaFiscal(codNotaFiscal);
             notaFiscal.setClienteCpf(clienteCpf);
             notaFiscal.setDataHoraCompra(dataHoraCompra);
             notaFiscal.setFuncionarioCpf(funcionarioCpf);
             notaFiscal.setQuantidadeComprada(quantidadeComprada);
             notaFiscal.setProdutoCodProduto(produtoCodProduto);
+
+            // Calculate the total purchase amount
+            BigDecimal precoProduto = produto.getPreco();
+            BigDecimal quantidadeBigDecimal = BigDecimal.valueOf(quantidadeComprada);
+            BigDecimal totalCompra = precoProduto.multiply(quantidadeBigDecimal);
             notaFiscal.setPrecoTotal(totalCompra);
-            // Insere o cupom fiscal no banco de dados
+
+            // Deduct the purchased quantity from the product's stock
+            produto.setQuantidadeEstoque(produto.getQuantidadeEstoque() - quantidadeComprada);
+            produtoDAO.update(produto); // Assuming you have an update method in your ProdutoDAO
+
+            // Insert the nota fiscal into the database
             notafiscalDAO.insert(notaFiscal);
 
-            // Limpa o objeto cupomFiscal para uma nova compra
-            notaFiscal = new NotaFiscal();
-            // Atualiza a lista de cupons fiscais após a compra
-            listaNotaFiscals = notafiscalDAO.listAll();
+            // Clear the notaFiscal object for a new transaction
+            this.notaFiscal = new NotaFiscal();
 
-            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Venda realizada com sucesso!", null));
-        } else {
-            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Produto não encontrado. Não é possível efetuar a Venda.", null));
+            // Update the list of notas fiscais after the sale
+            listaNotaFiscais = notafiscalDAO.listAll();
+
+            FacesContext.getCurrentInstance().addMessage(null, 
+            new FacesMessage(FacesMessage.SEVERITY_INFO, "Venda realizada com sucesso!", null));
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, 
+            new FacesMessage(FacesMessage.SEVERITY_ERROR, "Produto não encontrado. Não é possível efetuar a venda.", null));
         }
     }
 
-       public List<NotaFiscal> getListaNotaFiscals() {
-        return listaNotaFiscals;
+    // Getters and setters for listaNotaFiscais and notaFiscal
+
+    public List<NotaFiscal> getListaNotaFiscais() {
+        return listaNotaFiscais;
     }
 
-    public void setListaNotaFiscals(List<NotaFiscal> listaNotaFiscals) {
-        this.listaNotaFiscals = listaNotaFiscals;
+    public void setListaNotaFiscais(List<NotaFiscal> listaNotaFiscais) {
+        this.listaNotaFiscais = listaNotaFiscais;
     }
 
     public NotaFiscal getNotaFiscal() {
@@ -101,8 +125,4 @@ public class NotaFiscalController implements Serializable {
     public void setNotaFiscal(NotaFiscal notaFiscal) {
         this.notaFiscal = notaFiscal;
     }
-
-
-   
 }
-

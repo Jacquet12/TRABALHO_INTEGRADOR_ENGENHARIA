@@ -156,5 +156,72 @@ public class NotafiscalDAO implements  Serializable {
 
         return resultado;
     }
-}
 
+	public boolean notaFiscalExists(LocalDate dataHoraCompra, String funcionarioCpf, String clienteCpf, String produtoCodProduto) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		boolean exists = false;
+	
+		try {
+			con = ds.getConnection();
+			ps = con.prepareStatement("SELECT COUNT(*) FROM nota_fiscal WHERE data = ? AND funcionario_cpf = ? AND cliente_cpf = ? AND produto_cod_produto = ?");
+			ps.setDate(1, java.sql.Date.valueOf(dataHoraCompra));
+			ps.setString(2, funcionarioCpf);
+			ps.setString(3, clienteCpf);
+			ps.setString(4, produtoCodProduto);
+			rs = ps.executeQuery();
+	
+			if (rs.next()) {
+				int count = rs.getInt(1);
+				exists = count > 0;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DbUtil.closeResultSet(rs);
+			DbUtil.closePreparedStatement(ps);
+			DbUtil.closeConnection(con);
+		}
+	
+		return exists;
+	}
+
+	public NotaFiscal buscarNotaFiscalPorCodigo(String codigoNotaFiscal) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        NotaFiscal notaFiscal = null;
+
+        try {
+            con = ds.getConnection();
+            ps = con.prepareStatement("SELECT * FROM nota_fiscal WHERE cod_notafiscal = ?");
+            ps.setString(1, codigoNotaFiscal);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                notaFiscal = new NotaFiscal();
+                notaFiscal.setCodNotaFiscal(rs.getString("cod_notafiscal"));
+                notaFiscal.setProdutoCodProduto(rs.getString("produto_cod_produto"));
+                notaFiscal.setClienteCpf(rs.getString("cliente_cpf"));
+                LocalDate dataHoraCompra = rs.getDate("data").toLocalDate();
+                notaFiscal.setDataHoraCompra(dataHoraCompra);
+                notaFiscal.setFuncionarioCpf(rs.getString("funcionario_cpf"));
+                notaFiscal.setQuantidadeComprada(rs.getInt("quantidade_comprada"));
+                notaFiscal.setPrecoTotal(rs.getBigDecimal("preco_total"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbUtil.closeResultSet(rs);
+            DbUtil.closePreparedStatement(ps);
+            DbUtil.closeConnection(con);
+        }
+
+        return notaFiscal;
+    }
+	
+
+	
+
+}

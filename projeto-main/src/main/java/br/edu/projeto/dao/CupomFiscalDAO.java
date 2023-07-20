@@ -92,25 +92,25 @@ public class CupomFiscalDAO implements  Serializable {
 		return resultado;
 	}
 
-    public boolean delete(Fornecedor f) {
-        Boolean resultado = false;
-    	Connection con = null;
-    	PreparedStatement ps = null;
-    	try {
-	    	con = this.ds.getConnection();
-	    	try {				
-				ps = con.prepareStatement("DELETE FROM fornecedor WHERE cnpj = ?");
-				ps.setString(1, f.getCnpj());
-				ps.execute();
-				resultado = true;
-			} catch (SQLException e) {e.printStackTrace();}
-    	} catch (SQLException e) {e.printStackTrace();
-    	} finally {
-			DbUtil.closePreparedStatement(ps);
-			DbUtil.closeConnection(con);
-		}
-    	return resultado;
-    }
+    // public boolean delete(CupomFiscal f) {
+    //     Boolean resultado = false;
+    // 	Connection con = null;
+    // 	PreparedStatement ps = null;
+    // 	try {
+	//     	con = this.ds.getConnection();
+	//     	try {				
+	// 			ps = con.prepareStatement("DELETE FROM fornecedor WHERE cnpj = ?");
+	// 			ps.setString(1, f.getCnpj());
+	// 			ps.execute();
+	// 			resultado = true;
+	// 		} catch (SQLException e) {e.printStackTrace();}
+    // 	} catch (SQLException e) {e.printStackTrace();
+    // 	} finally {
+	// 		DbUtil.closePreparedStatement(ps);
+	// 		DbUtil.closeConnection(con);
+	// 	}
+    // 	return resultado;
+    // }
 
     public boolean update(Fornecedor f) {
         Boolean resultado = false;
@@ -137,6 +137,36 @@ public class CupomFiscalDAO implements  Serializable {
 		}
     	return resultado;
     }
+
+	// public boolean cupomExists(LocalDate dataHoraCompra, String funcionarioCpf, String clienteCpf, String produtoCodProduto) {
+	// 	boolean exists = false;
+	// 	Connection con = null;
+	// 	PreparedStatement ps = null;
+	// 	ResultSet rs = null;
+		
+	// 	try {
+	// 		con = ds.getConnection();
+	// 		ps = con.prepareStatement("SELECT COUNT(*) AS count FROM cupomfiscal WHERE dataHoraCompra = ? AND funcionarioCpf = ? AND clienteCpf = ? AND produtoCodProduto = ?");
+	// 		ps.setDate(1, java.sql.Date.valueOf(dataHoraCompra));
+	// 		ps.setString(2, funcionarioCpf);
+	// 		ps.setString(3, clienteCpf);
+	// 		ps.setString(4, produtoCodProduto);
+	// 		rs = ps.executeQuery();
+	
+	// 		if (rs.next()) {
+	// 			int count = rs.getInt("count");
+	// 			exists = count > 0;
+	// 		}
+	// 	} catch (SQLException e) {
+	// 		e.printStackTrace();
+	// 	} finally {
+	// 		DbUtil.closeResultSet(rs);
+	// 		DbUtil.closePreparedStatement(ps);
+	// 		DbUtil.closeConnection(con);
+	// 	}
+	
+	// 	return exists;
+	// }
 
 }
 

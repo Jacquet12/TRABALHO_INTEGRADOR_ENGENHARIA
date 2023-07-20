@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Define bibliotecas(tags) usadas na página -->
+<!-- Pode se usar elementos HTML padrão misturados com os JSF e Primefaces sem problemas -->
+<!-- As tags ui, h e f são do JSF -->
+<!-- ui são para elementos de organização (templates) e automatização (laços e condicionais) -->
+<!-- h são reimplementações de elementos HTML padrão que fornecem algumas funções/facilidades adicionais -->
+<!-- f são para comunicação/transmição de parâmetros entre páginas e para controle de requisições AJAX -->
+<!-- A tag p são do Primefaces, ela reimplementa as tags h com ainda mais funcionalidades e fornece tags adicionais com recursos avançados de Javascript e CSS embutidos -->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    template="/WEB-INF/templates/default.xhtml">
+    
+    <!-- Usado para definir uso do Template -->
+    <!-- O template só serve para uma melhor organização do código e para evitar a repetição de código -->
+    <ui:define name="content">
+    
+        <!-- Define formulário principal -->  
+        <h:form id="form">
+            <p:growl id="messages" showDetail="true" />
+
+	
+	        <p:dataTable id="dt-notaFiscal" widgetVar="dtnotaFiscal" var="notaFiscal" value="#{notaFiscalController.listaNotaFiscais}">
+	            <f:facet name="header">
+	                <div>
+	                    <span style="font-weight: bold">Produtos</span>
+	                </div>
+	            </f:facet>
+	
+               
+                <p:column headerText="codNotaFiscal">
+	                <h:outputText value="#{notaFiscal.codNotaFiscal}" />
+	            </p:column>
+
+                <p:column headerText="dataHoraCompra">
+	                <h:outputText value="#{notaFiscal.dataHoraCompra}" />
+	            </p:column>
+
+                <p:column headerText="funcionarioCpf">
+	                <h:outputText value="#{notaFiscal.funcionarioCpf}" />
+	            </p:column>
+              
+              
+                <p:column headerText="clienteCpf">
+	                <h:outputText value="#{notaFiscal.clienteCpf}" />
+	            </p:column>
+
+                <p:column headerText="produtoCodProduto">
+	                <h:outputText value="#{notaFiscal.produtoCodProduto}" />
+	            </p:column>
+
+                <p:column headerText="quantidadeComprada">
+	                <h:outputText value="#{notaFiscal.quantidadeComprada}" />
+	            </p:column>
+
+                <p:column headerText="precoTotal">
+	                <h:outputText value="#{notaFiscal.precoTotal}" />
+	            </p:column>
+
+	            <!-- <p:column> -->
+	            	<!-- Cuidado com botões que usam AJAX -->
+	            	<!-- process indica qual elemento do formulário será processado (padrão é todo o formulário), @this é só o próprio elemento -->
+	            	<!-- update informa qual elemento será atualizado (renderizado novamente) ao finalizar ação -->
+	            	<!-- é possível disparar ações para diversos eventos Javascript, deve-se cuidar a ordem da resolução dos mesmos -->
+	            	<!-- como regra geral a prioridade de processamento é a seguinte (eventos on... - oncomplete, onclick, onblur, actionListener, action, oncomplete no final) -->
+	            	<!-- PF é usado para chamada de função Javascript de algum elemento do Primefaces -->
+	                <!-- <p:commandButton icon="pi pi-pencil" update=":dialogs:produto-conteudo-dialog" 
+	                    oncomplete="PF('produtoDialog').show()"
+	                    styleClass="edit-button rounded-button ui-button-success" process="@this">
+	                    <f:setPropertyActionListener value="#{produto}" target="#{produtoController.produto}" />
+	                    <p:resetInput target=":dialogs:produto-conteudo-dialog" />
+	                </p:commandButton>
+	                <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
+	                                 process="@this" oncomplete="PF('removerProdutoDialog').show()">
+	                    <f:setPropertyActionListener value="#{produto}" target="#{produtoController.produto}" />
+	                </p:commandButton> -->
+	            <!-- </p:column>
+	 -->
+	        </p:dataTable>
+	    </h:form>
+    
+    </ui:define>
+</ui:composition>

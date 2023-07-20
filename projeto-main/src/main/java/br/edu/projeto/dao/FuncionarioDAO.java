@@ -166,5 +166,41 @@ public class FuncionarioDAO implements Serializable{
 		}
 		return null;
 	}
+
+
+
+	public Funcionario buscarPorCPF(String cpfFuncionario) {
+        Funcionario funcionario = null;
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        try {
+            con = ds.getConnection();
+            ps = con.prepareStatement("SELECT * FROM funcionario WHERE cpf = ?");
+            ps.setString(1, cpfFuncionario);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                funcionario = new Funcionario();
+                funcionario.setCpf(rs.getString("cpf"));
+                funcionario.setNome(rs.getString("nome"));
+                funcionario.setSobre_nome(rs.getString("sobre_nome"));
+                funcionario.setTipo_funcionario(rs.getString("tipo_funcionario"));
+                funcionario.setEmail(rs.getString("email"));
+                funcionario.setPhone_number(rs.getString("phone_number"));
+                funcionario.setSenha(rs.getString("senha"));
+                funcionario.setConfirmacao_senha(rs.getString("confirmacao_senha"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbUtil.closeResultSet(rs);
+            DbUtil.closePreparedStatement(ps);
+            DbUtil.closeConnection(con);
+        }
+
+        return funcionario;
+    }
 	
 }

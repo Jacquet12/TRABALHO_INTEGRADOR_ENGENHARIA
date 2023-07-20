@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Define bibliotecas(tags) usadas na página -->
+<!-- Pode se usar elementos HTML padrão misturados com os JSF e Primefaces sem problemas -->
+<!-- As tags ui, h e f são do JSF -->
+<!-- ui são para elementos de organização (templates) e automatização (laços e condicionais) -->
+<!-- h são reimplementações de elementos HTML padrão que fornecem algumas funções/facilidades adicionais -->
+<!-- f são para comunicação/transmição de parâmetros entre páginas e para controle de requisições AJAX -->
+<!-- A tag p são do Primefaces, ela reimplementa as tags h com ainda mais funcionalidades e fornece tags adicionais com recursos avançados de Javascript e CSS embutidos -->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    template="/WEB-INF/templates/default.xhtml">
+    
+    <!-- Usado para definir uso do Template -->
+    <!-- O template só serve para uma melhor organização do código e para evitar a repetição de código -->
+    <ui:define name="content">
+    
+        <!-- Define formulário principal -->  
+        <h:form id="form">
+            <p:growl id="messages" showDetail="true" />
+
+	
+	        <p:dataTable id="dt-compra" widgetVar="dtcompra" var="cupomFiscal" value="#{cupomFiscalController.listaCupomFiscals}">
+	            <f:facet name="header">
+	                <div>
+	                    <span style="font-weight: bold">Produtos</span>
+	                </div>
+	            </f:facet>
+	
+               
+                <p:column headerText="id">
+	                <h:outputText value="#{cupomFiscal.id}" />
+	            </p:column>
+
+                <p:column headerText="cpfFuncionario">
+	                <h:outputText value="#{cpfFuncionario.cpfFuncionario}" />
+	            </p:column>
+
+                <p:column headerText="cnpjFornecedor">
+	                <h:outputText value="#{cupomFiscal.cnpjFornecedor}" />
+	            </p:column>
+              
+              
+                <p:column headerText="codProduto">
+	                <h:outputText value="#{cupomFiscal.codProduto}" />
+	            </p:column>
+
+                <p:column headerText="quantidadeAdquirida">
+	                <h:outputText value="#{cupomFiscal.quantidadeAdquirida}" />
+	            </p:column>
+
+                <p:column headerText="dataHoraCompra">
+	                <h:outputText value="#{cupomFiscal.dataHoraCompra}" />
+	            </p:column>
+
+                <p:column headerText="totalCompra">
+	                <h:outputText value="#{cupomFiscal.totalCompra}" />
+	            </p:column>
+
+                <p:column headerText="formaPagamento">
+	                <h:outputText value="#{cupomFiscal.formaPagamento}" />
+	            </p:column>
+
+                <p:column headerText="observacoes">
+	                <h:outputText value="#{cupomFiscal.observacoes}" />
+	            </p:column>
+
+	        
+	        </p:dataTable>
+	    </h:form>
+    
+    </ui:define>
+</ui:composition>
